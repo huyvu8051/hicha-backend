@@ -6,7 +6,48 @@
   <version>1.0-SNAPSHOT</version>
   <name>Archetype - hicha-backend</name>
   <url>http://maven.apache.org</url>
+  <packaging>pom</packaging>
+
+  <properties>
+    <sonar.organization>huyvu8051</sonar.organization>
+    <sonar.host.url>https://sonarcloud.io</sonar.host.url>
+  </properties>
+
+  <inceptionYear>2021</inceptionYear>
+
+  <licenses>
+    <license>
+      <name>Apache v2</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.html</url>
+      <distribution>manual</distribution>
+    </license>
+  </licenses>
+  <developers>
+    <developer>
+      <id>huyvu8051</id>
+      <email>huyvu8051@gmail.com</email>
+      <roles>
+        <role>Developer</role>
+      </roles>
+      <name>Vu Van Huy</name>
+      <url>https://github.com/huyvu8051</url>
+      <timezone>+7</timezone>
+    </developer>
+  </developers>
+
   <modules>
     <module>hicha-business</module>
   </modules>
+
+  <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.sonarsource.scanner.maven</groupId>
+          <artifactId>sonar-maven-plugin</artifactId>
+          <version>3.4.0.905</version>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
 </project>
