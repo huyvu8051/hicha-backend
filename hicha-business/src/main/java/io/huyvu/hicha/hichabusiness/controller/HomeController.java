@@ -1,25 +1,34 @@
 package io.huyvu.hicha.hichabusiness.controller;
 
 import io.huyvu.hicha.hichabusiness.model.UserDTO;
+import io.huyvu.hicha.hichabusiness.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("api/v1")
 @RequiredArgsConstructor
 public class HomeController {
     private final JdbcClient jdbcClient;
+    private final UserRepository userRepository;
 
     @GetMapping
-    String home() {
-        return "Hello World!";
+    List<UserDTO> home() {
+        return userRepository.findAll();
     }
 
     @PostMapping("new")
     void newUser(@RequestBody UserDTO user) {
-        jdbcClient.sql("insert into user(id, name) values ($1, $2)")
-                .param(user.id(), user.name())
-                .update();
+
+        userRepository.save(user);
+    }
+
+
+    @GetMapping("/{id}")
+    UserDTO getUser(@PathVariable long id) {
+        return userRepository.findById(id);
     }
 }
