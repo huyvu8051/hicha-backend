@@ -2,7 +2,6 @@ package io.huyvu.hicha.hichabusiness.controller;
 
 import io.huyvu.hicha.hichabusiness.model.UserDTO;
 import lombok.RequiredArgsConstructor;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.web.bind.annotation.*;
 
