@@ -43,6 +43,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4.2.1
+        with:
+            distribution: 'adopt'
+            java-version: '21'
+
       - name: Analyze with SonarCloud
 
         # You can pin the exact commit or the version.
@@ -58,6 +64,7 @@ jobs:
             # mandatory
             -Dsonar.projectKey=huyvu8051_hicha-backend
             -Dsonar.organization=huyvu8051
+            -Dsonar.java.home=/opt/hostedtoolcache/Java_Adopt_jdk/21.0.2-13.0.LTS/x64
             # Comma-separated paths to directories containing main source files.
             #-Dsonar.sources= # optional, default is project base directory
             # When you need the analysis to take place in a directory other than the one from which it was launched
