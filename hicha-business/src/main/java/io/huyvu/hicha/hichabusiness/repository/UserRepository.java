@@ -11,18 +11,18 @@ import java.util.List;
 public interface UserRepository {
     @Select("""
             SELECT *
-            FROM user 
+            FROM hicha.user
             WHERE id = ${id}""")
     UserDTO findById(long id);
 
     @Insert("""
-            INSERT INTO user(id, name)
+            INSERT INTO hicha.user(id, name)
             VALUES (#{id}, #{name})
             """)
     void save(UserDTO user);
 
     @Select("""
             SELECT *
-            FROM user""")
+            FROM hicha.user""")
     List<UserDTO> findAll();
 }
