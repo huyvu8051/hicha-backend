@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.testcontainers.containers.MariaDBContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
@@ -37,24 +38,25 @@ class HichaBusinessApplicationTests {
 
 	@Test
 	void returnAtLeaseOne(){
-		var response = restTemplate.getForObject("/api/v1", List.class);
+		var response = restTemplate.getForObject("/api/v1/user", List.class);
 		assertThat(response.size()).isGreaterThan(0);
 	}
 
 
 	@Test
+	@WithMockUser("huyvu")
 	void saveOneUser(){
-		var result = restTemplate.postForObject("/api/v1/new", new UserDTO(null, "Jack Ma"), String.class);
+		var result = restTemplate.postForObject("/api/v1/user", new UserDTO(null, "Jack Ma"), String.class);
 		assertThat(result).isEqualTo("Success");
 
-		var response = restTemplate.getForObject("/api/v1", List.class);
+		var response = restTemplate.getForObject("/api/v1/user", List.class);
 		assertThat(response.size()).isGreaterThan(1);
 	}
 
 
 	@Test
 	void findByIdReturnOne(){
-		UserDTO forObject = restTemplate.getForObject("/api/v1/user/0", UserDTO.class);
+		UserDTO forObject = restTemplate.getForObject("/api/v1/user/1", UserDTO.class);
 		log.info(String.valueOf(forObject));
 		assertThat(forObject).isNotNull();
 	}
@@ -63,10 +65,10 @@ class HichaBusinessApplicationTests {
 
 
 	@Test
+	@WithMockUser("huyvu")
 	void findByIdReturnNull(){
 		UserDTO forObject = restTemplate.getForObject("/api/v1/user/-1", UserDTO.class);
-		assertThat(forObject.id()).isNull();
-		assertThat(forObject.name()).isNull();
+		assertThat(forObject).isNull();
 	}
 
 }
