@@ -44,9 +44,9 @@ class HichaBusinessApplicationTests {
 
 
 	@Test
-	@WithMockUser("huyvu")
 	void saveOneUser(){
-		var result = restTemplate.postForObject("/api/v1/user", new UserDTO(null, "Jack Ma"), String.class);
+
+		var result = restTemplate.withBasicAuth("huyvu", "password").postForObject("/api/v1/user", new UserDTO(null, "Jack Ma"), String.class);
 		assertThat(result).isEqualTo("Success");
 
 		var response = restTemplate.getForObject("/api/v1/user", List.class);
@@ -56,7 +56,7 @@ class HichaBusinessApplicationTests {
 
 	@Test
 	void findByIdReturnOne(){
-		UserDTO forObject = restTemplate.getForObject("/api/v1/user/1", UserDTO.class);
+		UserDTO forObject = restTemplate.withBasicAuth("huyvu", "password").getForObject("/api/v1/user/1", UserDTO.class);
 		log.info(String.valueOf(forObject));
 		assertThat(forObject).isNotNull();
 	}
@@ -65,7 +65,6 @@ class HichaBusinessApplicationTests {
 
 
 	@Test
-	@WithMockUser("huyvu")
 	void findByIdReturnNull(){
 		UserDTO forObject = restTemplate.getForObject("/api/v1/user/-1", UserDTO.class);
 		assertThat(forObject).isNull();

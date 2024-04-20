@@ -54,7 +54,7 @@ class HomeControllerTest {
     void shouldFindAllUsers(){
         when(userRepository.findAll()).thenReturn(userDTOs);
 
-        mockMvc.perform(get("/api/v1"))
+        mockMvc.perform(get("/api/v1/user"))
                 .andExpect(status().isOk())
                 .andDo((result -> {
                     log.info(result.getResponse().getContentAsString(StandardCharsets.UTF_8));

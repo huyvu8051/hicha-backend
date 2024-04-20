@@ -4,8 +4,9 @@ import io.huyvu.hicha.hichabusiness.model.UserDTO;
 import io.huyvu.hicha.hichabusiness.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,7 +25,10 @@ public class HomeController {
 
     @PostMapping
     String newUser(@RequestBody UserDTO user) {
-        log.info("new user: {}", user);
+        SecurityContext context = SecurityContextHolder.getContext();
+        Authentication authentication = context.getAuthentication();
+        Object principal = authentication.getCredentials();
+        log.info("new user: {} {}", user, principal);
         userRepository.save(user);
         return "Success";
     }
@@ -32,6 +36,7 @@ public class HomeController {
 
     @GetMapping("{id}")
     UserDTO getUser(@PathVariable long id) {
+        log.info("get user: {}", id);
         return userRepository.findById(id);
     }
 }

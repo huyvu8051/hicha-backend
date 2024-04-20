@@ -21,6 +21,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth->{
                     auth.requestMatchers(  "/actuator/**", "/api/v1/user/**").permitAll();
                 })
+                .httpBasic(Customizer.withDefaults())
                 .formLogin(Customizer.withDefaults())
                 .build();
     }
