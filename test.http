@@ -1,14 +1,13 @@
 # @no-redirect
 # @no-cookie-jar
-POST http://localhost:8080/api/v1/new
+POST http://localhost:8080/api/v1/user
 Content-Type: application/json
 
 {
-  "id": null,
   "name": "{{$random.email}}"
 
 }
 
 
 ### Send GET request
-GET http://localhost:8080/api/v1
+GET http://localhost:8080/api/v1/user

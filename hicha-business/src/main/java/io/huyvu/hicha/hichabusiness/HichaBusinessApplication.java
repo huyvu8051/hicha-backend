@@ -29,7 +29,7 @@ public class HichaBusinessApplication {
 	@Bean
 
 	@Observed(name = "posts.load-all-posts", contextualName = "post.find-all")
-	CommandLineRunner commandLineRunner(JsonPlaceholderService jsonPlaceholderService, ObservationRegistry observationRegistry) {
+	CommandLineRunner commandLineRunner(JsonPlaceholderService jsonPlaceholderService) {
 		return args -> {
 			jsonPlaceholderService.findAll();
 		};

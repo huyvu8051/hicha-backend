@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.nio.charset.StandardCharsets;
@@ -45,11 +46,11 @@ class HomeControllerTest {
     @BeforeEach
     void setUp() {
         IntStream.range(0, 10).forEach((e)->userDTOs.add(new UserDTO(null, faker.name().fullName())));
-
     }
 
     @SneakyThrows
     @Test
+    @WithMockUser("huyvu")
     void shouldFindAllUsers(){
         when(userRepository.findAll()).thenReturn(userDTOs);
 

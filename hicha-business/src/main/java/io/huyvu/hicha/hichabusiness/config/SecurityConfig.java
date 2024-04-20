@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
@@ -16,13 +17,9 @@ public class SecurityConfig {
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
+                .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth->{
-                    auth.requestMatchers("/").permitAll();
-                    auth.requestMatchers("/api/v1").permitAll();
-                    auth.requestMatchers("/api/v1/new").permitAll();
-                    auth.requestMatchers("/actuator/**").permitAll();
-                    auth.anyRequest().authenticated();
-
+                    auth.requestMatchers(  "/actuator/**", "/api/v1/user/**").permitAll();
                 })
                 .formLogin(Customizer.withDefaults())
                 .build();
