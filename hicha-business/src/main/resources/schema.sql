@@ -1,7 +1,7 @@
 # use hicha;
 create table if not exists user(
-    id int primary key,
+    id int primary key auto_increment,
     name varchar(255) not null
 );
 
-insert into user values (21, 'Tùng Dương')
+insert into user(name) values ('Tùng Dương')
