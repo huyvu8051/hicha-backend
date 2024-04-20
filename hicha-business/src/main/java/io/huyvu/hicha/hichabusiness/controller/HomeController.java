@@ -3,7 +3,6 @@ package io.huyvu.hicha.hichabusiness.controller;
 import io.huyvu.hicha.hichabusiness.model.UserDTO;
 import io.huyvu.hicha.hichabusiness.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -12,7 +11,6 @@ import java.util.List;
 @RequestMapping("api/v1")
 @RequiredArgsConstructor
 public class HomeController {
-    private final JdbcClient jdbcClient;
     private final UserRepository userRepository;
 
     @GetMapping
@@ -21,9 +19,9 @@ public class HomeController {
     }
 
     @PostMapping("new")
-    void newUser(@RequestBody UserDTO user) {
-
+    String newUser(@RequestBody UserDTO user) {
         userRepository.save(user);
+        return "Success";
     }
 
 

@@ -47,7 +47,7 @@ class UserRepositoryTest {
     }*/
     @BeforeEach
     void setup(){
-        List<UserDTO> userDTOS = List.of(new UserDTO(1, "Son Tung M-TP"), new UserDTO(2, "Hieu Thu Hai"), new UserDTO(3, "Truc Nhan"));
+        List<UserDTO> userDTOS = List.of(new UserDTO(4L, "Son Tung M-TP"), new UserDTO(2L, "Hieu Thu Hai"), new UserDTO(3L, "Truc Nhan"));
         for (UserDTO userDTO : userDTOS) {
             userRepository.save(userDTO);
         }
