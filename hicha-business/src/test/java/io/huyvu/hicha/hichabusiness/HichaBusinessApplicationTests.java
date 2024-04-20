@@ -54,7 +54,8 @@ class HichaBusinessApplicationTests {
 
 	@Test
 	void findByIdReturnOne(){
-		UserDTO forObject = restTemplate.getForObject("/api/v1/user/1", UserDTO.class);
+		UserDTO forObject = restTemplate.getForObject("/api/v1/user/0", UserDTO.class);
+		log.info(String.valueOf(forObject));
 		assertThat(forObject).isNotNull();
 	}
 

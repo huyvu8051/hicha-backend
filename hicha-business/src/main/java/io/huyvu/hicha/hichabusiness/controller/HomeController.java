@@ -25,7 +25,7 @@ public class HomeController {
     }
 
 
-    @GetMapping("/{id}")
+    @GetMapping("{id}")
     UserDTO getUser(@PathVariable long id) {
         return userRepository.findById(id);
     }
