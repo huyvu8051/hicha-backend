@@ -1,3 +1,5 @@
+version: '3.7'
+
 services:
   mariadb:
     image: 'mariadb:latest'
@@ -8,14 +10,29 @@ services:
       - 'MARIADB_USER=myuser'
     ports:
       - '3306:3306'
+    deploy:
+      resources:
+        limits:
+          cpus: '1'  # Minimum CPU requirement for MariaDB (10% of one core)
+          memory: 256M  # Minimum memory requirement for MariaDB (256MB)
 
   minio:
     image: 'bitnami/minio'
     ports:
       - '9000:9000'
       - '9001:9001'
+    deploy:
+      resources:
+        limits:
+          cpus: '1'  # Minimum CPU requirement for MinIO (10% of one core)
+          memory: 256M  # Minimum memory requirement for MinIO (256MB)
 
   zipkin:
     image: 'openzipkin/zipkin:latest'
     ports:
       - '9411:9411'
+    deploy:
+      resources:
+        limits:
+          cpus: '1'  # Minimum CPU requirement for Zipkin (10% of one core)
+          memory: 128M  # Minimum memory requirement for Zipkin (128MB)

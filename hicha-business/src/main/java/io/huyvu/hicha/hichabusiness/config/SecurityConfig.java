@@ -18,6 +18,8 @@ public class SecurityConfig {
         return http
                 .authorizeHttpRequests(auth->{
                     auth.requestMatchers("/").permitAll();
+                    auth.requestMatchers("/api/v1").permitAll();
+                    auth.requestMatchers("/api/v1/new").permitAll();
                     auth.requestMatchers("/actuator/**").permitAll();
                     auth.anyRequest().authenticated();
 
