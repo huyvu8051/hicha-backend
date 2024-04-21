@@ -10,7 +10,7 @@ import org.springframework.core.task.support.TaskExecutorAdapter;
 import java.util.concurrent.Executors;
 
 @Configuration
-public class TheadsConfiguration {
+public class ThreadsConfiguration {
     @Bean(TaskExecutionAutoConfiguration.APPLICATION_TASK_EXECUTOR_BEAN_NAME)
     public AsyncTaskExecutor asyncTaskExecutor() {
         return new TaskExecutorAdapter(Executors.newVirtualThreadPerTaskExecutor());

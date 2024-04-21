@@ -1,6 +1,9 @@
 package io.huyvu.hicha.hichabusiness.repository;
 
 import io.huyvu.hicha.hichabusiness.model.UserDTO;
+import jakarta.annotation.Resource;
+import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mybatis.spring.boot.test.autoconfigure.MybatisTest;
@@ -15,16 +18,16 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+
 @Testcontainers
 @MybatisTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@Slf4j
 class UserRepositoryTest {
     @Container
     @ServiceConnection
     static MariaDBContainer<?> mariadb = new MariaDBContainer<>("mariadb:latest")
-            .withDatabaseName("hicha")
-            .withUsername("myuser")
-            .withPassword("secret");
+            .withDatabaseName("hicha");
 
 
     @Autowired
@@ -36,12 +39,6 @@ class UserRepositoryTest {
         assertThat(mariadb.isRunning()).isTrue();
     }
 
-    /*@DynamicPropertySource
-    static void neo4jProperties(DynamicPropertyRegistry registry) {
-        registry.add("spring.datasource.url",mariadb::getJdbcUrl);
-        registry.add("spring.datasource.username", mariadb::getUsername);
-        registry.add("spring.datasource.password", mariadb::getPassword);
-    }*/
     @BeforeEach
     void setup() {
         List<UserDTO> userDTOS = List.of(new UserDTO(4L, "Son Tung M-TP"), new UserDTO(2L, "Hieu Thu Hai"), new UserDTO(3L, "Truc Nhan"));
@@ -49,7 +46,6 @@ class UserRepositoryTest {
             userRepository.save(userDTO);
         }
     }
-
 
     @Test
     void shouldReturnAllUser() {

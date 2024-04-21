@@ -1,5 +1,7 @@
 package io.huyvu.hicha.hichabusiness.controller;
 
+import io.huyvu.hicha.hichabusiness.config.SecurityConfig;
+import io.huyvu.hicha.hichabusiness.config.ThreadsConfiguration;
 import io.huyvu.hicha.hichabusiness.service.JsonPlaceholderServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -16,14 +18,12 @@ import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@WebMvcTest({PostController.class, JsonPlaceholderServiceImpl.class})
+@WebMvcTest({PostController.class, JsonPlaceholderServiceImpl.class, SecurityConfig.class})
 @AutoConfigureMockMvc
 @Slf4j
 class PostControllerTest {
     @Autowired
     MockMvc mockMvc;
-
-
 
     @WithMockUser("huyvu")
     @Test
