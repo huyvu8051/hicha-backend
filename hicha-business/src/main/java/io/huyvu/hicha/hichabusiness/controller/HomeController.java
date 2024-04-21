@@ -29,6 +29,7 @@ public class HomeController {
         Authentication authentication = context.getAuthentication();
         Object principal = authentication.getCredentials();
         log.info("new user: {} {}", user, principal);
+        log.info("Thread: {}", Thread.currentThread());
         userRepository.save(user);
         return "Success";
     }
