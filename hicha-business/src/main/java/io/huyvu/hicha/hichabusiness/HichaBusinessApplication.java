@@ -14,24 +14,7 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
 
 @SpringBootApplication
 public class HichaBusinessApplication {
-
 	public static void main(String[] args) {
 		SpringApplication.run(HichaBusinessApplication.class, args);
-	}
-
-	@Bean
-	JsonPlaceholderService jsonPlaceholderService() {
-		RestClient restClient = RestClient.create("https://jsonplaceholder.typicode.com");
-		HttpServiceProxyFactory fact = HttpServiceProxyFactory.builderFor(RestClientAdapter.create(restClient)).build();
-		return fact.createClient(JsonPlaceholderService.class);
-	}
-
-	@Bean
-
-	@Observed(name = "posts.load-all-posts", contextualName = "post.find-all")
-	CommandLineRunner commandLineRunner(JsonPlaceholderService jsonPlaceholderService) {
-		return args -> {
-			jsonPlaceholderService.findAll();
-		};
 	}
 }

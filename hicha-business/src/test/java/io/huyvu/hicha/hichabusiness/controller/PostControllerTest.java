@@ -1,5 +1,6 @@
 package io.huyvu.hicha.hichabusiness.controller;
 
+import io.huyvu.hicha.hichabusiness.service.JsonPlaceholderServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +16,7 @@ import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@WebMvcTest(PostController.class)
+@WebMvcTest({PostController.class, JsonPlaceholderServiceImpl.class})
 @AutoConfigureMockMvc
 @Slf4j
 class PostControllerTest {
