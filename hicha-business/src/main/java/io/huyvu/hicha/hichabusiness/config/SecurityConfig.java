@@ -20,6 +20,7 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth->{
                     auth.requestMatchers(  "/actuator/**", "/api/v1/user/**").permitAll();
+                    auth.anyRequest().authenticated();
                 })
                 .httpBasic(Customizer.withDefaults())
                 .formLogin(Customizer.withDefaults())
