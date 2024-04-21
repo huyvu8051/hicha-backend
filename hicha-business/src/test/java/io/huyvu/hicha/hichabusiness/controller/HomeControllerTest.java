@@ -1,6 +1,7 @@
 package io.huyvu.hicha.hichabusiness.controller;
 
 import com.github.javafaker.Faker;
+import io.huyvu.hicha.hichabusiness.config.SecurityConfig;
 import io.huyvu.hicha.hichabusiness.model.UserDTO;
 import io.huyvu.hicha.hichabusiness.repository.UserRepository;
 import lombok.SneakyThrows;
@@ -30,7 +31,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 /**
  * Mock test
  */
-@WebMvcTest(HomeController.class)
+@WebMvcTest({HomeController.class, SecurityConfig.class})
 @AutoConfigureMockMvc
 @Slf4j
 class HomeControllerTest {
@@ -41,7 +42,7 @@ class HomeControllerTest {
     UserRepository userRepository;
 
     List<UserDTO> userDTOs = new ArrayList<>();
-    static Faker faker = new Faker(new Locale("vi"));
+    static Faker faker = new Faker(Locale.of("vi"));
 
     @BeforeEach
     void setUp() {
