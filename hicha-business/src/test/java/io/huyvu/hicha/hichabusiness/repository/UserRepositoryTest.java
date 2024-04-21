@@ -7,17 +7,13 @@ import org.mybatis.spring.boot.test.autoconfigure.MybatisTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
-import org.springframework.test.context.DynamicPropertyRegistry;
-import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.MariaDBContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
-import org.testcontainers.shaded.org.checkerframework.checker.units.qual.C;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 @Testcontainers
 @MybatisTest
@@ -39,6 +35,7 @@ class UserRepositoryTest {
         assertThat(mariadb.isCreated()).isTrue();
         assertThat(mariadb.isRunning()).isTrue();
     }
+
     /*@DynamicPropertySource
     static void neo4jProperties(DynamicPropertyRegistry registry) {
         registry.add("spring.datasource.url",mariadb::getJdbcUrl);
@@ -46,7 +43,7 @@ class UserRepositoryTest {
         registry.add("spring.datasource.password", mariadb::getPassword);
     }*/
     @BeforeEach
-    void setup(){
+    void setup() {
         List<UserDTO> userDTOS = List.of(new UserDTO(4L, "Son Tung M-TP"), new UserDTO(2L, "Hieu Thu Hai"), new UserDTO(3L, "Truc Nhan"));
         for (UserDTO userDTO : userDTOS) {
             userRepository.save(userDTO);
@@ -55,7 +52,7 @@ class UserRepositoryTest {
 
 
     @Test
-    void shouldReturnAllUser(){
+    void shouldReturnAllUser() {
         List<UserDTO> all = userRepository.findAll();
         assertThat(all).isNotNull().isNotEmpty();
     }
