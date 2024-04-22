@@ -16,8 +16,8 @@ public interface UserRepository {
     UserDTO findById(long id);
 
     @Insert("""
-            INSERT INTO hicha.users(user_id, username)
-            VALUES (#{userId}, #{username})
+            INSERT INTO hicha.users(username)
+            VALUES (#{username})
             """)
     void save(UserDTO user);
 

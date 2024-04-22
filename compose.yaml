@@ -27,22 +27,8 @@ services:
     command:
       - "--mysqld.username=root:verysecret"
       - "--mysqld.address=host.docker.internal:3306"
-#    environment:
-#      - DATA_SOURCE_NAME=root:verysecret@(host.docker.internal:3306)/hicha
     ports:
       - "9104:9104"
-      -
-  minio:
-    image: 'bitnami/minio'
-    ports:
-      - '9000:9000'
-      - '9001:9001'
-    container_name: minio
-#    deploy:
-#      resources:
-#        limits:
-#          cpus: '1'  # Minimum CPU requirement for MinIO (10% of one core)
-#          memory: 256M  # Minimum memory requirement for MinIO (256MB)
 
 
   prometheus:
