@@ -1,0 +1,33 @@
+spring:
+  application:
+    name: hicha-business
+  sql:
+    init:
+      mode: always
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+    endpoint:
+      health:
+        show-details: always
+  tracing:
+    sampling:
+      probability: 1.0
+
+  metrics:
+    tags:
+      application: ${spring.application.name}
+    distribution:
+      percentiles-histogram:
+        http: false
+      sla:
+        http:
+          server:
+            requests: 1ms,20ms,50ms,100ms,200ms,500ms,1s,2s,5s,10s,10s,50s
+  prometheus:
+    metrics:
+      export:
+        enabled: true

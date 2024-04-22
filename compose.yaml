@@ -3,12 +3,13 @@ version: '3.7'
 services:
   mariadb:
     image: 'mariadb:latest'
+    container_name: mariadb
     environment:
       - 'MARIADB_DATABASE=hicha'
       - 'MARIADB_PASSWORD=secret'
       - 'MARIADB_ROOT_PASSWORD=verysecret'
       - 'MARIADB_USER=myuser'
-      - 'MYSQL_ALLOW_MULTIPLE_STATEMENTS=true'
+#      - 'MYSQL_ALLOW_MULTIPLE_STATEMENTS=true'
     ports:
       - '3306:3306'
 
@@ -23,6 +24,7 @@ services:
     ports:
       - '9000:9000'
       - '9001:9001'
+    container_name: minio
 #    deploy:
 #      resources:
 #        limits:
@@ -33,8 +35,30 @@ services:
     image: 'openzipkin/zipkin:latest'
     ports:
       - '9411:9411'
+    container_name: zipkin
 #    deploy:
 #      resources:
 #        limits:
 #          cpus: '1'  # Minimum CPU requirement for Zipkin (10% of one core)
 #          memory: 128M  # Minimum memory requirement for Zipkin (128MB)
+
+
+  prometheus:
+    image: "prom/prometheus"
+    ports:
+      - "9090:9090"
+    container_name: prometheus
+    networks:
+      - prometheus-grafana-network
+
+  grafana:
+    image: "grafana/grafana"
+    ports:
+      - "3000:3000"
+    container_name: grafana
+    networks:
+      - prometheus-grafana-network
+
+
+networks:
+  prometheus-grafana-network:

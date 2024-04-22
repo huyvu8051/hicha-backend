@@ -21,7 +21,7 @@ public class SecurityConfig {
                 .csrf(CsrfConfigurer::disable)
                 .sessionManagement(SessionManagementConfigurer::disable)
                 .authorizeHttpRequests(auth->{
-                    auth.requestMatchers(  "/actuator/**", "/api/v1/user/**","/api/v1/message/**").permitAll();
+                    auth.requestMatchers(  "/actuator/**/*", "/api/v1/user/**","/api/v1/message/**").permitAll();
                     auth.anyRequest().authenticated();
                 })
                 .httpBasic(Customizer.withDefaults())
