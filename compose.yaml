@@ -3,36 +3,49 @@ version: '3.7'
 services:
   mariadb:
     image: 'mariadb:latest'
+    container_name: mariadb
     environment:
       - 'MARIADB_DATABASE=hicha'
       - 'MARIADB_PASSWORD=secret'
       - 'MARIADB_ROOT_PASSWORD=verysecret'
       - 'MARIADB_USER=myuser'
+#      - 'MYSQL_ALLOW_MULTIPLE_STATEMENTS=true'
     ports:
       - '3306:3306'
-    deploy:
-      resources:
-        limits:
-          cpus: '1'  # Minimum CPU requirement for MariaDB (10% of one core)
-          memory: 256M  # Minimum memory requirement for MariaDB (256MB)
 
-  minio:
-    image: 'bitnami/minio'
-    ports:
-      - '9000:9000'
-      - '9001:9001'
-    deploy:
-      resources:
-        limits:
-          cpus: '1'  # Minimum CPU requirement for MinIO (10% of one core)
-          memory: 256M  # Minimum memory requirement for MinIO (256MB)
+#    deploy:
+#      resources:
+#        limits:
+#          cpus: '1'  # Minimum CPU requirement for MariaDB (10% of one core)
+#          memory: 256M  # Minimum memory requirement for MariaDB (256MB)
 
-  zipkin:
-    image: 'openzipkin/zipkin:latest'
+
+  mariadb-exporter:
+    container_name: mariadb-exporter
+    image: prom/mysqld-exporter
+    restart: always
+    command:
+      - "--mysqld.username=root:verysecret"
+      - "--mysqld.address=host.docker.internal:3306"
     ports:
-      - '9411:9411'
-    deploy:
-      resources:
-        limits:
-          cpus: '1'  # Minimum CPU requirement for Zipkin (10% of one core)
-          memory: 128M  # Minimum memory requirement for Zipkin (128MB)
+      - "9104:9104"
+
+
+  prometheus:
+    container_name: prometheus
+    image: "prom/prometheus"
+    restart: always
+    extra_hosts:
+      - host.docker.internal:host-gateway
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml
+    volumes:
+      - ./docker/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - "9090:9090"
+
+  grafana:
+    container_name: grafana
+    image: "grafana/grafana"
+    ports:
+      - "3000:3000"
