@@ -31,8 +31,7 @@ services:
 #      - DATA_SOURCE_NAME=root:verysecret@(host.docker.internal:3306)/hicha
     ports:
       - "9104:9104"
-
-
+      -
   minio:
     image: 'bitnami/minio'
     ports:
@@ -44,17 +43,6 @@ services:
 #        limits:
 #          cpus: '1'  # Minimum CPU requirement for MinIO (10% of one core)
 #          memory: 256M  # Minimum memory requirement for MinIO (256MB)
-
-  zipkin:
-    image: 'openzipkin/zipkin:latest'
-    ports:
-      - '9411:9411'
-    container_name: zipkin
-#    deploy:
-#      resources:
-#        limits:
-#          cpus: '1'  # Minimum CPU requirement for Zipkin (10% of one core)
-#          memory: 128M  # Minimum memory requirement for Zipkin (128MB)
 
 
   prometheus:
