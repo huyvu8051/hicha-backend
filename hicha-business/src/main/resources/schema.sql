@@ -8,7 +8,6 @@ create table if not exists users
 create table if not exists  conversations
 (
     conversation_id int auto_increment primary key
-    -- Other columns for conversation metadata, such as title, creation date, etc.
 );
 
 create table if not exists  user_conversations
@@ -31,5 +30,8 @@ create table if not exists  messages
     foreign key (sender_id) references users (user_id)
 );
 
-
 insert into users(username) value('huyvu'), ('admin'), ('testuser');
+INSERT INTO conversations () value ();
+# INSERT INTO user_conversations (user_id, conversation_id) VALUES (1, 1);
+INSERT INTO messages (conversation_id, sender_id, message_text) VALUES (1, 1, 'This is a test message.');
+

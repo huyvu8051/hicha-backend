@@ -12,7 +12,7 @@ public interface UserRepository {
     @Select("""
             SELECT *
             FROM hicha.users
-            WHERE user_id = ${id}""")
+            WHERE user_id = #{id}""")
     UserDTO findById(long id);
 
     @Insert("""

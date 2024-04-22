@@ -8,8 +8,10 @@ services:
       - 'MARIADB_PASSWORD=secret'
       - 'MARIADB_ROOT_PASSWORD=verysecret'
       - 'MARIADB_USER=myuser'
+      - 'MYSQL_ALLOW_MULTIPLE_STATEMENTS=true'
     ports:
       - '3306:3306'
+
 #    deploy:
 #      resources:
 #        limits:
