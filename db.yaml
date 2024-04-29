@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  mysql_master:
+    image: mysql:latest
+    container_name: mysql_master
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: test_db
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+    ports:
+      - "3306:3306"
+    command: [ "--server-id=1", "--default-authentication-plugin=mysql_native_password" ]
+
+
+
+
+  mysql_slave:
+    image: mysql:latest
+    container_name: mysql_slave
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: test_db
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+    ports:
+      - "3307:3306"
+    command: [ "--server-id=2", "--default-authentication-plugin=mysql_native_password" ]
+
+
+
+
+
