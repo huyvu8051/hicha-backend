@@ -2,7 +2,7 @@ package io.huyvu.hicha.hichabusiness.controller;
 
 import io.huyvu.hicha.hichabusiness.mapper.UserMapper;
 import io.huyvu.hicha.hichabusiness.model.UserDTO;
-import io.huyvu.hicha.hichabusiness.repository.UserEntity;
+import io.huyvu.hicha.hichabusiness.model.UserEntity;
 import io.huyvu.hicha.hichabusiness.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

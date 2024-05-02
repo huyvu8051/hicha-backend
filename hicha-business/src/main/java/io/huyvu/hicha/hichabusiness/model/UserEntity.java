@@ -5,9 +5,8 @@ import lombok.experimental.FieldDefaults;
 
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@NoArgsConstructor
-@AllArgsConstructor
-public class UserDTO {
+public class UserEntity {
     private Long userId;
     private String username;
+
 }
