@@ -49,3 +49,21 @@ services:
     image: "grafana/grafana"
     ports:
       - "3000:3000"
+
+
+
+
+
+  cassandra:
+    image: cassandra:latest
+    container_name: cassandra
+    #    restart: always
+    environment:
+      - MAX_HEAP_SIZE=512M
+      - HEAP_NEWSIZE=100M
+      - JVM_OPTS=-javaagent:/opt/datastax-mcac-agent-0.3.5-4.1-beta1/lib/datastax-mcac-agent.jar
+    ports:
+      - "9042:9042"
+      - "9103:9103"
+    volumes:
+      - ./cassandra_exporter/datastax-mcac-agent-0.3.5-4.1-beta1:/opt/datastax-mcac-agent-0.3.5-4.1-beta1
