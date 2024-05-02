@@ -1,5 +1,6 @@
 package io.huyvu.hicha.hichabusiness.repository;
 
+import io.huyvu.hicha.hichabusiness.mapper.UserMapper;
 import io.huyvu.hicha.hichabusiness.model.UserDTO;
 import jakarta.annotation.Resource;
 import lombok.SneakyThrows;
@@ -43,7 +44,7 @@ class UserRepositoryTest {
     void setup() {
         List<UserDTO> userDTOS = List.of(new UserDTO(null, "Son Tung M-TP"), new UserDTO(null, "Hieu Thu Hai"), new UserDTO(null, "Truc Nhan"));
         for (UserDTO userDTO : userDTOS) {
-            userRepository.save(userDTO);
+            userRepository.save(UserMapper.INSTANCE.toEntity(userDTO));
         }
     }
 

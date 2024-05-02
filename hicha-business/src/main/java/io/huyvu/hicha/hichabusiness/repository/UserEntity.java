@@ -1,19 +1,14 @@
-package io.huyvu.hicha.hichabusiness.model;
+package io.huyvu.hicha.hichabusiness.repository;
 
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class UserDTO {
+public class UserEntity {
     private Long userId;
     private String username;
 
-    public UserDTO(Long userId, String username) {
-        this.userId = userId;
-        this.username = username;
-    }
-
-    public UserDTO() {
+    public UserEntity() {
     }
 
     public Long getUserId() {
@@ -34,8 +29,8 @@ public class UserDTO {
 
     public boolean equals(final Object o) {
         if (o == this) return true;
-        if (!(o instanceof UserDTO)) return false;
-        final UserDTO other = (UserDTO) o;
+        if (!(o instanceof UserEntity)) return false;
+        final UserEntity other = (UserEntity) o;
         if (!other.canEqual((Object) this)) return false;
         final Object this$userId = this.getUserId();
         final Object other$userId = other.getUserId();
@@ -47,7 +42,7 @@ public class UserDTO {
     }
 
     protected boolean canEqual(final Object other) {
-        return other instanceof UserDTO;
+        return other instanceof UserEntity;
     }
 
     public int hashCode() {
@@ -61,6 +56,6 @@ public class UserDTO {
     }
 
     public String toString() {
-        return "UserDTO(userId=" + this.getUserId() + ", username=" + this.getUsername() + ")";
+        return "UserEntity(userId=" + this.getUserId() + ", username=" + this.getUsername() + ")";
     }
 }

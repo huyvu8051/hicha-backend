@@ -1,6 +1,8 @@
 package io.huyvu.hicha.hichabusiness.controller;
 
+import io.huyvu.hicha.hichabusiness.mapper.UserMapper;
 import io.huyvu.hicha.hichabusiness.model.UserDTO;
+import io.huyvu.hicha.hichabusiness.repository.UserEntity;
 import io.huyvu.hicha.hichabusiness.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,7 +32,8 @@ public class HomeController {
         Object principal = authentication.getCredentials();
         log.info("new user: {} {}", user, principal);
         log.info("Thread: {}", Thread.currentThread());
-        userRepository.save(user);
+        UserEntity entity = UserMapper.INSTANCE.toEntity(user);
+        userRepository.save(entity);
         return "Success";
     }
 

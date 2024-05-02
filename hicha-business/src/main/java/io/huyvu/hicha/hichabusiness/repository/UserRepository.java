@@ -19,7 +19,7 @@ public interface UserRepository {
             INSERT INTO hicha.users(username)
             VALUES (#{username})
             """)
-    void save(UserDTO user);
+    void save(UserEntity user);
 
     @Select("""
             SELECT *
