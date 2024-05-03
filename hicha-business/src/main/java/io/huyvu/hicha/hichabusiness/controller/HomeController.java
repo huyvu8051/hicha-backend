@@ -22,6 +22,8 @@ public class HomeController {
 
     @GetMapping
     List<UserDTO> getAllUser() {
+        var test = (id: 1, username: "huyvu");
+         log.info("test manifold: {}", test);
         return userRepository.findAll();
     }
 
