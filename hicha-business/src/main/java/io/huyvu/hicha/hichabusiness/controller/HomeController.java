@@ -1,11 +1,12 @@
 package io.huyvu.hicha.hichabusiness.controller;
 
-import io.huyvu.hicha.hichabusiness.mapper.UserMapper;
 import io.huyvu.hicha.hichabusiness.model.UserDTO;
 import io.huyvu.hicha.hichabusiness.model.UserEntity;
 import io.huyvu.hicha.hichabusiness.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.mapstruct.Mapper;
+import org.mapstruct.factory.Mappers;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -43,4 +44,12 @@ public class HomeController {
         log.info("get user: {}", id);
         return userRepository.findById(id);
     }
+
+
+    @Mapper
+    public interface UserMapper {
+        UserMapper INSTANCE = Mappers.getMapper( UserMapper.class );
+        UserEntity toEntity(UserDTO dto);
+    }
+
 }

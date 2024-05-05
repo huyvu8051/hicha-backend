@@ -1,12 +1,11 @@
 package io.huyvu.hicha.hichabusiness.repository;
 
-import io.huyvu.hicha.hichabusiness.mapper.UserMapper;
+import io.huyvu.hicha.hichabusiness.controller.HomeController;
 import io.huyvu.hicha.hichabusiness.model.UserDTO;
-import jakarta.annotation.Resource;
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mapstruct.factory.Mappers;
 import org.mybatis.spring.boot.test.autoconfigure.MybatisTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -43,8 +42,8 @@ class UserRepositoryTest {
     @BeforeEach
     void setup() {
         List<UserDTO> userDTOS = List.of(new UserDTO(null, "Son Tung M-TP"), new UserDTO(null, "Hieu Thu Hai"), new UserDTO(null, "Truc Nhan"));
-        for (UserDTO userDTO : userDTOS) {
-            userRepository.save(UserMapper.INSTANCE.toEntity(userDTO));
+        for (var userDTO : userDTOS) {
+            userRepository.save(HomeController.UserMapper.INSTANCE.toEntity(userDTO));
         }
     }
 
