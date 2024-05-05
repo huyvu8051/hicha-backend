@@ -2,13 +2,12 @@ package io.huyvu.hicha.hichabusiness;
 
 import io.huyvu.hicha.hichabusiness.model.UserDTO;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.Ignore;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
-import org.testcontainers.containers.MariaDBContainer;
+import org.testcontainers.containers.CassandraContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
@@ -27,8 +26,8 @@ class HichaBusinessApplicationTests {
 
 	@Container
 	@ServiceConnection
-	static MariaDBContainer<?> mariaDBContainer =  new MariaDBContainer<>("mariadb:latest")
-			.withDatabaseName("hicha");
+	static CassandraContainer<?> cassandraDatabase = new CassandraContainer<>("cassandra:4.0.12");
+
 
 	@Autowired
 	TestRestTemplate restTemplate;
