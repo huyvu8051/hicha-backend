@@ -1,17 +1,16 @@
 version: '3.7'
 
 services:
-  mariadb:
-    image: 'mariadb:latest'
-    container_name: mariadb
-    environment:
-      - 'MARIADB_DATABASE=hicha'
-      - 'MARIADB_PASSWORD=secret'
-      - 'MARIADB_ROOT_PASSWORD=verysecret'
-      - 'MARIADB_USER=myuser'
-#      - 'MYSQL_ALLOW_MULTIPLE_STATEMENTS=true'
-    ports:
-      - '3306:3306'
+#  mariadb:
+#    image: 'mariadb:11.3.2'
+#    container_name: mariadb
+#    environment:
+#      - 'MARIADB_DATABASE=hicha'
+#      - 'MARIADB_PASSWORD=secret'
+#      - 'MARIADB_ROOT_PASSWORD=verysecret'
+#      - 'MARIADB_USER=myuser'
+#    ports:
+#      - '3306:3306'
 
 #    deploy:
 #      resources:
@@ -20,15 +19,15 @@ services:
 #          memory: 256M  # Minimum memory requirement for MariaDB (256MB)
 
 
-  mariadb-exporter:
-    container_name: mariadb-exporter
-    image: prom/mysqld-exporter
-    restart: always
-    command:
-      - "--mysqld.username=root:verysecret"
-      - "--mysqld.address=host.docker.internal:3306"
-    ports:
-      - "9104:9104"
+#  mariadb-exporter:
+#    container_name: mariadb-exporter
+#    image: 'prom/mysqld-exporter'
+#    restart: always
+#    command:
+#      - "--mysqld.username=root:verysecret"
+#      - "--mysqld.address=host.docker.internal:3306"
+#    ports:
+#      - "9104:9104"
 
 
   prometheus:
@@ -49,21 +48,41 @@ services:
     image: "grafana/grafana"
     ports:
       - "3000:3000"
+    volumes:
+      - ./docker/grafana/datasources/:/etc/grafana/provisioning/datasources/
+      - ./docker/grafana/dashboard.yaml:/etc/grafana/provisioning/dashboards/main.yaml
+      - ./docker/grafana/dashboards:/var/lib/grafana/dashboards
 
 
 
+  cassandra-extractor:
+    image: busybox:latest
+    container_name: cassandra-extractor
+    volumes:
+      - ./docker/cassandra_exporter/datastax-mcac-agent-0.3.5.tar.gz:/opt/datastax-mcac-agent-0.3.5.tar.gz
+      - cassandra_mcac:/opt/datastax-mcac-agent-0.3.5
+    command: sh -c "tar -xzf /opt/datastax-mcac-agent-0.3.5.tar.gz -C /opt/"
 
 
   cassandra:
-    image: cassandra:latest
+    image: cassandra:4.0.12
     container_name: cassandra
     #    restart: always
     environment:
       - MAX_HEAP_SIZE=512M
       - HEAP_NEWSIZE=100M
-      - JVM_OPTS=-javaagent:/opt/datastax-mcac-agent-0.3.5-4.1-beta1/lib/datastax-mcac-agent.jar
+      - JVM_OPTS=-javaagent:/opt/datastax-mcac-agent-0.3.5/lib/datastax-mcac-agent.jar
     ports:
       - "9042:9042"
       - "9103:9103"
     volumes:
-      - ./cassandra_exporter/datastax-mcac-agent-0.3.5-4.1-beta1:/opt/datastax-mcac-agent-0.3.5-4.1-beta1
+      - cassandra_mcac:/opt/datastax-mcac-agent-0.3.5
+    depends_on:
+      cassandra-extractor:
+        condition: service_completed_successfully
+
+
+
+
+volumes:
+  cassandra_mcac:
