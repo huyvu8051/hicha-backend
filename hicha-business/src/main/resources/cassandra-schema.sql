@@ -4,6 +4,7 @@ CREATE KEYSPACE IF NOT EXISTS hicha
         'replication_factor': 1
         };
 USE hicha;
+
 CREATE TABLE IF NOT EXISTS messages (
                                         message_id      uuid PRIMARY KEY,
                                         conversation_id int,

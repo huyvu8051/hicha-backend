@@ -1,16 +1,16 @@
 version: '3.7'
 
 services:
-  mariadb:
-    image: 'mariadb:11.3.2'
-    container_name: mariadb
-    environment:
-      - 'MARIADB_DATABASE=hicha'
-      - 'MARIADB_PASSWORD=secret'
-      - 'MARIADB_ROOT_PASSWORD=verysecret'
-      - 'MARIADB_USER=myuser'
-    ports:
-      - '3306:3306'
+#  mariadb:
+#    image: 'mariadb:11.3.2'
+#    container_name: mariadb
+#    environment:
+#      - 'MARIADB_DATABASE=hicha'
+#      - 'MARIADB_PASSWORD=secret'
+#      - 'MARIADB_ROOT_PASSWORD=verysecret'
+#      - 'MARIADB_USER=myuser'
+#    ports:
+#      - '3306:3306'
 
 #    deploy:
 #      resources:
@@ -19,15 +19,15 @@ services:
 #          memory: 256M  # Minimum memory requirement for MariaDB (256MB)
 
 
-  mariadb-exporter:
-    container_name: mariadb-exporter
-    image: 'prom/mysqld-exporter'
-    restart: always
-    command:
-      - "--mysqld.username=root:verysecret"
-      - "--mysqld.address=host.docker.internal:3306"
-    ports:
-      - "9104:9104"
+#  mariadb-exporter:
+#    container_name: mariadb-exporter
+#    image: 'prom/mysqld-exporter'
+#    restart: always
+#    command:
+#      - "--mysqld.username=root:verysecret"
+#      - "--mysqld.address=host.docker.internal:3306"
+#    ports:
+#      - "9104:9104"
 
 
   prometheus:
