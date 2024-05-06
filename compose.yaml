@@ -48,9 +48,20 @@ services:
     image: "grafana/grafana"
     ports:
       - "3000:3000"
+    volumes:
+      - ./docker/grafana/datasources/:/etc/grafana/provisioning/datasources/
+      - ./docker/grafana/dashboard.yaml:/etc/grafana/provisioning/dashboards/main.yaml
+      - ./docker/grafana/dashboards:/var/lib/grafana/dashboards
 
 
 
+  cassandra-extractor:
+    image: busybox:latest
+    container_name: cassandra-extractor
+    volumes:
+      - ./docker/cassandra_exporter/datastax-mcac-agent-0.3.5.tar.gz:/opt/datastax-mcac-agent-0.3.5.tar.gz
+      - cassandra_mcac:/opt/datastax-mcac-agent-0.3.5
+    command: sh -c "tar -xzf /opt/datastax-mcac-agent-0.3.5.tar.gz -C /opt/"
 
 
   cassandra:
@@ -65,4 +76,13 @@ services:
       - "9042:9042"
       - "9103:9103"
     volumes:
-      - ./cassandra_exporter/datastax-mcac-agent-0.3.5:/opt/datastax-mcac-agent-0.3.5
+      - cassandra_mcac:/opt/datastax-mcac-agent-0.3.5
+    depends_on:
+      cassandra-extractor:
+        condition: service_completed_successfully
+
+
+
+
+volumes:
+  cassandra_mcac:
