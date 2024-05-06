@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Primary;
 public class CassandraConfig {
     @Bean
     @Primary
-    CassandraConnectionDetails mainConnection(CassandraConnectionDetails cassandraConnectionDetailsForCassandra0){
-        return cassandraConnectionDetailsForCassandra0;
+    CassandraConnectionDetails mainConnection(CassandraConnectionDetails cassandraConnectionDetailsForD1r1n1){
+        return cassandraConnectionDetailsForD1r1n1;
     }
 }
