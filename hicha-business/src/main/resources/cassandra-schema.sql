@@ -1,3 +1,5 @@
+
+
 CREATE KEYSPACE IF NOT EXISTS hicha
     WITH replication = {
         'class': 'SimpleStrategy',
