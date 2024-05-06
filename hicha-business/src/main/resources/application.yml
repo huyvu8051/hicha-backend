@@ -15,10 +15,6 @@ spring:
     keyspace-name: hicha
 
 
-
-
-
-
 management:
   endpoints:
     web:
