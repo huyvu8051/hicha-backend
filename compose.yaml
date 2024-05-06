@@ -36,78 +36,169 @@ services:
     command: sh -c "tar -xzf /opt/datastax-mcac-agent-0.3.5.tar.gz -C /opt/"
 
 
-  cassandra0:
+  d1r1n1:
     image: cassandra:4.0.12
-    container_name: cassandra0
-    hostname: cassandra0
+    container_name: d1r1n1
+    hostname: d1r1n1
     environment: &environment
-      - MAX_HEAP_SIZE=512M
-      - HEAP_NEWSIZE=100M
-      - JVM_OPTS=-javaagent:/opt/datastax-mcac-agent-0.3.5/lib/datastax-mcac-agent.jar
-      - CASSANDRA_SEEDS=cassandra0,cassandra1
-      - CASSANDRA_CLUSTER_NAME=MyTestCluster
-      - CASSANDRA_DC=DC1
-      - CASSANDRA_RACK=RACK1
-      - CASSANDRA_ENDPOINT_SNITCH=GossipingPropertyFileSnitch
-      - CASSANDRA_NUM_TOKENS=128
+      CASSANDRA_KEYSPACE: hicha
+      CASSANDRA_SEEDS: d1r1n1
+      CASSANDRA_CLUSTER_NAME: C1
+      CASSANDRA_DC: D1
+      CASSANDRA_RACK: R1
+      CASSANDRA_ENDPOINT_SNITCH: GossipingPropertyFileSnitch
+      CASSANDRA_NUM_TOKENS: 128
+      CASSANDRA_REPLICATION_STRATEGY: "NetworkTopologyStrategy"
+      CASSANDRA_REPLICATION_OPTIONS: "{'D1': 3, 'D2': 3}"
+      CASSANDRA_PARTITIONER: "org.apache.cassandra.dht.Murmur3Partitioner"
+      MAX_HEAP_SIZE: 512M
+      HEAP_NEWSIZE: 100M
+      JVM_OPTS: -javaagent:/opt/datastax-mcac-agent-0.3.5/lib/datastax-mcac-agent.jar
     ports:
       - "9042:9042"
       - "9103:9103"
-    volumes:
-      - cassandra_mcac:/opt/datastax-mcac-agent-0.3.5
     depends_on:
       cassandra-extractor:
         condition: service_completed_successfully
+    volumes: &mcac
+      - cassandra_mcac:/opt/datastax-mcac-agent-0.3.5
 
 
 
-  cassandra1:
+
+  d1r1n2:
     image: cassandra:4.0.12
-    container_name: cassandra1
+    container_name: d1r1n2
+    hostname: d1r1n2
     ports:
-      - "9043:9042"
       - "9104:9103"
-    environment: *environment
-    volumes:
-      - cassandra_mcac:/opt/datastax-mcac-agent-0.3.5
+    environment:
+      <<: *environment
+      CASSANDRA_CLUSTER_NAME: C1
+      CASSANDRA_DC: D1
+      CASSANDRA_RACK: R1
+
+    volumes: *mcac
     depends_on:
-      cassandra0:
+      d1r1n1:
         condition: service_started
       cassandra-extractor:
         condition: service_completed_successfully
 
-
-  cassandra2:
+  d1r2n1:
     image: cassandra:4.0.12
-    container_name: cassandra2
+    container_name: d1r2n1
+    hostname: d1r2n1
     ports:
-      - "9044:9042"
       - "9105:9103"
-    environment: *environment
-    volumes:
-      - cassandra_mcac:/opt/datastax-mcac-agent-0.3.5
+    environment:
+      <<: *environment
+      CASSANDRA_CLUSTER_NAME: C1
+      CASSANDRA_DC: D1
+      CASSANDRA_RACK: R2
+
+    volumes: *mcac
     depends_on:
-      cassandra0:
+      d1r1n1:
         condition: service_started
       cassandra-extractor:
         condition: service_completed_successfully
 
-
-  cassandra3:
+  d1r2n2:
     image: cassandra:4.0.12
-    container_name: cassandra3
+    container_name: d1r2n2
+    hostname: d1r2n2
     ports:
-      - "9045:9042"
       - "9106:9103"
-    environment: *environment
-    volumes:
-      - cassandra_mcac:/opt/datastax-mcac-agent-0.3.5
+    environment:
+      <<: *environment
+      CASSANDRA_CLUSTER_NAME: C1
+      CASSANDRA_DC: D1
+      CASSANDRA_RACK: R2
+
+    volumes: *mcac
     depends_on:
-      cassandra1:
+      d1r1n1:
         condition: service_started
       cassandra-extractor:
         condition: service_completed_successfully
 
+  d2r3n1:
+    image: cassandra:4.0.12
+    container_name: d2r3n1
+    hostname: d2r3n1
+    ports:
+      - "9107:9103"
+    environment:
+      <<: *environment
+      CASSANDRA_CLUSTER_NAME: C1
+      CASSANDRA_DC: D2
+      CASSANDRA_RACK: R3
+
+    volumes: *mcac
+    depends_on:
+      d1r1n1:
+        condition: service_started
+      cassandra-extractor:
+        condition: service_completed_successfully
+
+  d2r3n2:
+    image: cassandra:4.0.12
+    container_name: d2r3n2
+    hostname: d2r3n2
+    ports:
+      - "9108:9103"
+    environment:
+      <<: *environment
+      CASSANDRA_CLUSTER_NAME: C1
+      CASSANDRA_DC: D2
+      CASSANDRA_RACK: R3
+
+    volumes: *mcac
+    depends_on:
+      d1r1n1:
+        condition: service_started
+      cassandra-extractor:
+        condition: service_completed_successfully
+
+  d2r4n1:
+    image: cassandra:4.0.12
+    container_name: d2r4n1
+    hostname: d2r4n1
+    ports:
+      - "9109:9103"
+    environment:
+      <<: *environment
+      CASSANDRA_CLUSTER_NAME: C1
+      CASSANDRA_DC: D2
+      CASSANDRA_RACK: R4
+
+    volumes: *mcac
+    depends_on:
+      d1r1n1:
+        condition: service_started
+      cassandra-extractor:
+        condition: service_completed_successfully
+
+
+  d2r4n2:
+    image: cassandra:4.0.12
+    container_name: d2r4n2
+    hostname: d2r4n2
+    ports:
+      - "9110:9103"
+    environment:
+      <<: *environment
+      CASSANDRA_CLUSTER_NAME: C1
+      CASSANDRA_DC: D2
+      CASSANDRA_RACK: R4
+
+    volumes: *mcac
+    depends_on:
+      d1r1n1:
+        condition: service_started
+      cassandra-extractor:
+        condition: service_completed_successfully
 
 volumes:
   cassandra_mcac:

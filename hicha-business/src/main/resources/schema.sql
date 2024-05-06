@@ -1,8 +1,8 @@
 
 CREATE KEYSPACE IF NOT EXISTS hicha
     WITH replication = {
-        'class': 'SimpleStrategy',
-        'replication_factor': 1
+        'class': 'NetworkTopologyStrategy',
+        'replication_factor': 3
         };
 USE hicha;
 
