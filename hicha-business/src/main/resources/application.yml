@@ -14,7 +14,6 @@ spring:
       init-query-timeout: 60s
     keyspace-name: hicha
 
-
 management:
   endpoints:
     web:
