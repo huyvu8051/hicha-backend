@@ -5,7 +5,6 @@ services:
   prometheus:
     container_name: prometheus
     image: "prom/prometheus"
-    restart: always
     extra_hosts:
       - host.docker.internal:host-gateway
     command:
@@ -55,7 +54,7 @@ services:
         condition: service_completed_successfully
     volumes: &mcac
       - cassandra_mcac:/opt/datastax-mcac-agent-0.3.5
-    healthcheck: &health
+    healthcheck:
       test: [ "CMD-SHELL", "[ $$(nodetool statusgossip) = running ]" ]
 
 
@@ -63,7 +62,6 @@ services:
   d1r1n2:
     image: cassandra:4.0.12
     container_name: d1r1n2
-    restart: unless-stopped
     ports:
       - "9043:9042"
       - "9104:9103"
@@ -79,12 +77,10 @@ services:
         condition: service_healthy
       cassandra-extractor:
         condition: service_completed_successfully
-    healthcheck: *health
 
   d1r1n3:
     image: cassandra:4.0.12
     container_name: d1r1n3
-    restart: unless-stopped
     ports:
       - "9044:9042"
       - "9105:9103"
@@ -93,10 +89,9 @@ services:
       CASSANDRA_CLUSTER_NAME: C1
       CASSANDRA_DC: D1
       CASSANDRA_RACK: R1
-
     volumes: *mcac
     depends_on:
-      d1r1n2:
+      d1r1n1:
         condition: service_healthy
       cassandra-extractor:
         condition: service_completed_successfully
