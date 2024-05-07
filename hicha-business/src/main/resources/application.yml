@@ -13,6 +13,8 @@ spring:
       connect-timeout: 60s
       init-query-timeout: 60s
     keyspace-name: hicha
+    local-datacenter: D1
+    contact-points: d1r1n1
 
 management:
   endpoints:

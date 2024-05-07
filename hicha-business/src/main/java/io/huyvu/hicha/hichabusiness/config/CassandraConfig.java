@@ -7,8 +7,8 @@ import org.springframework.context.annotation.Primary;
 
 @Configuration
 public class CassandraConfig {
-    @Bean
-    @Primary
+//    @Bean
+//    @Primary
     CassandraConnectionDetails mainConnection(CassandraConnectionDetails cassandraConnectionDetailsForD1r1n1){
         return cassandraConnectionDetailsForD1r1n1;
     }
