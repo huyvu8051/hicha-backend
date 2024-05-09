@@ -1,39 +1,34 @@
 package io.huyvu.hicha.hichabusiness.controller;
 
+import io.huyvu.hicha.hichabusiness.model.ConversationDetails;
 import io.huyvu.hicha.hichabusiness.model.Message;
-import io.huyvu.hicha.hichabusiness.repository.MessageCassandraRepository;
+import io.huyvu.hicha.hichabusiness.repository.MessageRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.time.Instant;
 
 @RestController
 @RequestMapping("api/v1/message")
 @RequiredArgsConstructor
 public class MessageController {
-    private final MessageCassandraRepository messageRepository;
-
-    @GetMapping
-    public List<Message> getAllMessages() {
-        var result = new ArrayList<Message>();
-        Iterable<Message> all = messageRepository.findAll();
-        all.forEach(result::add);
-        return result;
-    }
-
+    private final MessageRepository messageRepository;
 
     @PostMapping
-    public Message saveMessage(@RequestBody Message message) {
-        if(message.getMessageId() == null){
-            message.setMessageId(UUID.randomUUID());
+    void sendMessage(@RequestBody Message message) {
+        if(message.getSentAt() == null){
+            message.setSentAt(Instant.now());
         }
-        return messageRepository.save(message);
+        messageRepository.save(message);
     }
 
     @GetMapping("{id}")
-    public Message getMessage(@PathVariable Long id) {
-        return messageRepository.findById(id).orElse(null);
+    ConversationDetails getConversationDetails(@PathVariable Long id) {
+        var messages = messageRepository.findByConversationId(id);
+        return ConversationDetails.builder()
+                .conversationId(id)
+                .conversationName("Conversation " + id)
+                .messages(messages)
+                .build();
     }
 }

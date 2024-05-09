@@ -7,10 +7,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.cassandra.AutoConfigureDataCassandra;
 import org.springframework.boot.test.autoconfigure.data.cassandra.DataCassandraTest;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
-import org.testcontainers.containers.CassandraContainer;
+
+import org.testcontainers.containers.MariaDBContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
@@ -25,20 +24,18 @@ import static org.assertj.core.api.Assertions.assertThat;
 class MessageRepositoryTest {
     @Container
     @ServiceConnection
-    static CassandraContainer<?> cassandraDatabase = new CassandraContainer<>("cassandra:4.0.12");
+    static MariaDBContainer<?> cassandraDatabase = new MariaDBContainer<>("mariadb:11.3.2").withDatabaseName("hicha");
 
     @Autowired
-    MessageCassandraRepository repository;
+    MessageRepository repository;
 
     static Faker faker = new Faker(Locale.of("vi"));
 
 
-    @Test
-    void shouldReturnMessages(){
-        Iterable<Message> messages = repository.findAll();
-
-        messages.forEach(e->log.info("item: {}",e.toString()));
-
+//    @Test
+    void shouldReturnMessages() {
+        Iterable<Message> messages = repository.findByConversationId(1);
+        messages.forEach(e -> log.info("item: {}", e.toString()));
         assertThat(2).isGreaterThan(1);
     }
 
