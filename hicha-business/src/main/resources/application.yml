@@ -8,13 +8,13 @@ spring:
   cassandra:
     schema-action: create_if_not_exists
     request:
-      timeout: 10s
+      timeout: 60s
     connection:
-      connect-timeout: 10s
-      init-query-timeout: 10s
-    local-datacenter: datacenter1
+      connect-timeout: 60s
+      init-query-timeout: 60s
     keyspace-name: hicha
-
+    local-datacenter: D1
+    contact-points: d1r1n1
 
 
 management:

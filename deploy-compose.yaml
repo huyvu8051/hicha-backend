@@ -1,0 +1,12 @@
+version: '3.7'
+
+services:
+
+
+  hicha:
+    image: hicha-app:latest
+    ports:
+      - "8080:8080"
+    environment:
+      - spring.cassandra.contact-points=d1r1n1:9042
+      - spring.cassandra.local-datacenter=D1

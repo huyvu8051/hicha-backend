@@ -1,39 +1,10 @@
 version: '3.7'
 
 services:
-#  mariadb:
-#    image: 'mariadb:11.3.2'
-#    container_name: mariadb
-#    environment:
-#      - 'MARIADB_DATABASE=hicha'
-#      - 'MARIADB_PASSWORD=secret'
-#      - 'MARIADB_ROOT_PASSWORD=verysecret'
-#      - 'MARIADB_USER=myuser'
-#    ports:
-#      - '3306:3306'
-
-#    deploy:
-#      resources:
-#        limits:
-#          cpus: '1'  # Minimum CPU requirement for MariaDB (10% of one core)
-#          memory: 256M  # Minimum memory requirement for MariaDB (256MB)
-
-
-#  mariadb-exporter:
-#    container_name: mariadb-exporter
-#    image: 'prom/mysqld-exporter'
-#    restart: always
-#    command:
-#      - "--mysqld.username=root:verysecret"
-#      - "--mysqld.address=host.docker.internal:3306"
-#    ports:
-#      - "9104:9104"
-
 
   prometheus:
     container_name: prometheus
     image: "prom/prometheus"
-    restart: always
     extra_hosts:
       - host.docker.internal:host-gateway
     command:
@@ -64,23 +35,60 @@ services:
     command: sh -c "tar -xzf /opt/datastax-mcac-agent-0.3.5.tar.gz -C /opt/"
 
 
-  cassandra:
+  d1r1n1:
     image: cassandra:4.0.12
-    container_name: cassandra
-    #    restart: always
-    environment:
-      - MAX_HEAP_SIZE=512M
-      - HEAP_NEWSIZE=100M
-      - JVM_OPTS=-javaagent:/opt/datastax-mcac-agent-0.3.5/lib/datastax-mcac-agent.jar
+    container_name: d1r1n1
+    environment: &environment
+      CASSANDRA_SEEDS: d1r1n1
+      CASSANDRA_CLUSTER_NAME: C1
+      CASSANDRA_DC: D1
+      CASSANDRA_RACK: R1
+      CASSANDRA_ENDPOINT_SNITCH: GossipingPropertyFileSnitch
+      CASSANDRA_NUM_TOKENS: 128
+      JVM_OPTS: -javaagent:/opt/datastax-mcac-agent-0.3.5/lib/datastax-mcac-agent.jar
     ports:
       - "9042:9042"
       - "9103:9103"
-    volumes:
-      - cassandra_mcac:/opt/datastax-mcac-agent-0.3.5
     depends_on:
       cassandra-extractor:
         condition: service_completed_successfully
+    volumes: &mcac
+      - cassandra_mcac:/opt/datastax-mcac-agent-0.3.5
+    healthcheck:
+      test: [ "CMD-SHELL", "[ $$(nodetool statusgossip) = running ]" ]
 
+
+
+  d1r1n2:
+    image: cassandra:4.0.12
+    container_name: d1r1n2
+    ports:
+      - "9043:9042"
+      - "9104:9103"
+    environment:
+      <<: *environment
+
+    volumes: *mcac
+    depends_on:
+      d1r1n1:
+        condition: service_healthy
+      cassandra-extractor:
+        condition: service_completed_successfully
+
+  d1r1n3:
+    image: cassandra:4.0.12
+    container_name: d1r1n3
+    ports:
+      - "9044:9042"
+      - "9105:9103"
+    environment:
+      <<: *environment
+    volumes: *mcac
+    depends_on:
+      d1r1n1:
+        condition: service_healthy
+      cassandra-extractor:
+        condition: service_completed_successfully
 
 
 
