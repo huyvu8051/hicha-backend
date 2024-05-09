@@ -39,6 +39,8 @@ services:
     image: cassandra:4.0.12
     container_name: d1r1n1
     environment: &environment
+      MAX_HEAP_SIZE: 512M
+      HEAP_NEWSIZE: 100M
       CASSANDRA_SEEDS: d1r1n1
       CASSANDRA_CLUSTER_NAME: C1
       CASSANDRA_DC: D1
