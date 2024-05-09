@@ -1,14 +1,23 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>io.huyvu.reboot</groupId>
+  <parent>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-parent</artifactId>
+    <version>3.2.5</version>
+    <relativePath/> <!-- lookup parent from repository -->
+  </parent>
+
+  <groupId>io.huyvu.hicha</groupId>
   <artifactId>hicha-backend</artifactId>
   <version>1.0-SNAPSHOT</version>
   <name>Archetype - hicha-backend</name>
   <url>http://maven.apache.org</url>
   <packaging>pom</packaging>
 
+
   <properties>
+    <java.version>21</java.version>
     <sonar.organization>huyvu8051</sonar.organization>
     <sonar.host.url>https://sonarcloud.io</sonar.host.url>
     <sonar.coverage.exclusions>**/HichaBusinessApplication.java, **/MyBatisNativeConfiguration.java</sonar.coverage.exclusions>
@@ -39,7 +48,16 @@
   <modules>
     <module>hicha-business</module>
     <module>hicha-repository</module>
+    <module>hicha-repository-impl</module>
   </modules>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+      <optional>true</optional>
+    </dependency>
+  </dependencies>
 
   <build>
     <pluginManagement>
