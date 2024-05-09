@@ -1,4 +1,4 @@
-package io.huyvu.hicha.repository.impl;
+package io.huyvu.hicha.repository.impl.repo;
 
 import io.huyvu.hicha.repository.model.Message;
 import io.huyvu.hicha.repository.repo.MessageRepository;
