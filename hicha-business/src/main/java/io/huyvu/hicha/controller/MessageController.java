@@ -2,7 +2,7 @@ package io.huyvu.hicha.controller;
 
 import io.huyvu.hicha.model.ConversationDetails;
 import io.huyvu.hicha.repository.model.Message;
-import io.huyvu.hicha.repository.repository.MessageRepository;
+import io.huyvu.hicha.repository.repo.MessageRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 

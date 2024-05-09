@@ -1,7 +1,7 @@
-package io.huyvu.hicha.repositoryimpl;
+package io.huyvu.hicha.repository.impl;
 
 import io.huyvu.hicha.repository.model.Message;
-import io.huyvu.hicha.repository.repository.MessageRepository;
+import io.huyvu.hicha.repository.repo.MessageRepository;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;

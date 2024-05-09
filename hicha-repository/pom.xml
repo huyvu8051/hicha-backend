@@ -8,6 +8,6 @@
     </parent>
     <artifactId>hicha-repository</artifactId>
     <name>Archetype - hicha-repository</name>
-    <url>http://maven.apache.org</url>
+    <url>https://maven.apache.org</url>
 
 </project>
