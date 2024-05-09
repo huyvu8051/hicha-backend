@@ -1,4 +1,4 @@
-package io.huyvu.hicha.hichabusiness.model;
+package io.huyvu.hicha.model;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;

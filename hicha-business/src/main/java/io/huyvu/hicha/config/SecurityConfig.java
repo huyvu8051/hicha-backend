@@ -1,4 +1,4 @@
-package io.huyvu.hicha.hichabusiness.config;
+package io.huyvu.hicha.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -5,17 +5,6 @@ spring:
     init:
       mode: always
 
-  cassandra:
-    schema-action: create_if_not_exists
-    request:
-      timeout: 60s
-    connection:
-      connect-timeout: 60s
-      init-query-timeout: 60s
-    keyspace-name: hicha
-    local-datacenter: D1
-    contact-points: d1r1n1
-
 
 management:
   endpoints:
@@ -32,4 +21,5 @@ management:
 #logging:
 #  level:
 #    root: info
+
 

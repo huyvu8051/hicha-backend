@@ -1,4 +1,4 @@
-package io.huyvu.hicha.hichabusiness.config;
+package io.huyvu.hicha.config;
 
 import org.apache.coyote.ProtocolHandler;
 import org.springframework.boot.autoconfigure.task.TaskExecutionAutoConfiguration;
