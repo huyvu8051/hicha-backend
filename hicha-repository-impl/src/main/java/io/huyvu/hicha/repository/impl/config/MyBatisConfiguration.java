@@ -1,4 +1,4 @@
-package io.huyvu.hicha.config;
+package io.huyvu.hicha.repository.impl.config;
 
 import org.mybatis.spring.boot.autoconfigure.ConfigurationCustomizer;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
