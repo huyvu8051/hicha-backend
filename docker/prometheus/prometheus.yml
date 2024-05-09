@@ -14,5 +14,5 @@ scrape_configs:
 
   - job_name: 'cassandra'
     static_configs:
-      - targets: [ 'd1r1n1:9103', 'd1r1n2:9103', 'd1r1n3:9103', 'd1r2n2:9103',  'd2r3n1:9103',  'd2r3n2:9103',  'd2r4n1:9103',  'd2r4n2:9103' ]
+      - targets: [ 'd1r1n1:9103', 'd1r1n2:9103', 'd1r1n3:9103']
 

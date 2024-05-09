@@ -16,6 +16,7 @@ spring:
     local-datacenter: D1
     contact-points: d1r1n1
 
+
 management:
   endpoints:
     web:
