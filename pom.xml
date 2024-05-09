@@ -38,6 +38,7 @@
 
   <modules>
     <module>hicha-business</module>
+    <module>hicha-repository</module>
   </modules>
 
   <build>
