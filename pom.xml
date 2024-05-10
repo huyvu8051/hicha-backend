@@ -20,6 +20,8 @@
     <java.version>21</java.version>
     <sonar.organization>huyvu8051</sonar.organization>
     <sonar.host.url>https://sonarcloud.io</sonar.host.url>
+
+    <org.mapstruct.version>1.5.5.Final</org.mapstruct.version>
     <sonar.coverage.exclusions>**/HichaBusinessApplication.java, **/MyBatisNativeConfiguration.java</sonar.coverage.exclusions>
   </properties>
 
@@ -56,6 +58,18 @@
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
       <optional>true</optional>
+    </dependency>
+
+    <dependency>
+      <groupId>org.mapstruct</groupId>
+      <artifactId>mapstruct</artifactId>
+      <version>${org.mapstruct.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.mapstruct</groupId>
+      <artifactId>mapstruct-processor</artifactId>
+      <version>${org.mapstruct.version}</version>
     </dependency>
   </dependencies>
 
