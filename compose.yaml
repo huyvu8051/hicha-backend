@@ -55,6 +55,3 @@ services:
       - "9104:9104"
 
 
-
-volumes:
-  cassandra_mcac:
