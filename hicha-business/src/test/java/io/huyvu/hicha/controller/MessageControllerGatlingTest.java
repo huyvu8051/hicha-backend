@@ -49,8 +49,8 @@ public class MessageControllerGatlingTest extends Simulation {
 
     {
         setUp(
-                myFirstScenario.injectOpen(constantUsersPerSec(1000).during(5)),
-                mySecondScenario.injectOpen(constantUsersPerSec(1000).during(5))
+                myFirstScenario.injectOpen(constantUsersPerSec(500).during(20)),
+                mySecondScenario.injectOpen(constantUsersPerSec(500).during(20))
         ).protocols(httpProtocol);
     }
 
