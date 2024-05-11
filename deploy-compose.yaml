@@ -8,5 +8,4 @@ services:
     ports:
       - "8080:8080"
     environment:
-      - spring.cassandra.contact-points=d1r1n1:9042
-      - spring.cassandra.local-datacenter=D1
+      - spring.datasource.url=jdbc:mariadb://mariadb:3306/hicha?user=myuser&password=secret

@@ -32,11 +32,7 @@ public class MessageControllerGatlingTest extends Simulation {
                     .acceptHeader("application/json")
                     .contentTypeHeader("application/json");
 
-    ScenarioBuilder myFirstScenario = scenario("My First Scenario")
-            .exec(http("Request get")
-                    .get("/api/v1/message/1"));
-
-    ScenarioBuilder mySecondScenario = scenario("My Second Scenario")
+    ScenarioBuilder myFirstScenario = scenario("My Second Scenario")
             .feed(feeder)
             .exec(http("Request insert")
                     .post("/api/v1/message")
@@ -45,13 +41,21 @@ public class MessageControllerGatlingTest extends Simulation {
                           "conversationId": 1,
                           "senderId": 1,
                           "messageText": "#{messageText}"
-                        }""")));
+                        }""")))
+            .exec(http("Request get")
+                    .get("/api/v1/message/1"));
 
     {
         setUp(
-                myFirstScenario.injectOpen(constantUsersPerSec(500).during(20)),
-                mySecondScenario.injectOpen(constantUsersPerSec(500).during(20))
-        ).protocols(httpProtocol);
+                myFirstScenario.injectOpen( nothingFor(4), // 1
+                        atOnceUsers(1000), // 2
+                        rampUsers(1000).during(5), // 3
+                        constantUsersPerSec(2000).during(15), // 4
+                        constantUsersPerSec(2000).during(15).randomized(), // 5
+                        rampUsersPerSec(1000).to(20).during(10), // 6
+                        rampUsersPerSec(1000).to(20).during(10).randomized(), // 7
+                        stressPeakUsers(10000).during(20) // 8)
+        ).protocols(httpProtocol));
     }
 
 }
