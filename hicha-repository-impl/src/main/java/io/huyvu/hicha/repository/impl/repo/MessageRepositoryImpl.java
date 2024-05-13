@@ -15,6 +15,7 @@ public interface MessageRepositoryImpl extends MessageRepository {
             select *
             from messages
             where conversation_id = #{conversationId}
+            order by message_id desc
             limit 100""")
     List<Message> findByConversationId(long conversationId);
 

@@ -19,10 +19,11 @@ public class MessageController {
 
 
     @PostMapping
-    void sendMessage(@RequestBody MessageDTO dto) {
+    String sendMessage(@RequestBody MessageDTO dto) {
         Message entity = MessageMapper.INSTANCE.map(dto);
         entity.setSentAt(Instant.now());
         messageRepository.save(entity);
+        return "Success";
     }
 
 

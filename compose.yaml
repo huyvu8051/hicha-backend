@@ -2,29 +2,6 @@ version: '3.7'
 
 services:
 
-  prometheus:
-    container_name: prometheus
-    image: "prom/prometheus"
-    extra_hosts:
-      - host.docker.internal:host-gateway
-    command:
-      - --config.file=/etc/prometheus/prometheus.yml
-    volumes:
-      - ./docker/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
-    ports:
-      - "9090:9090"
-
-  grafana:
-    container_name: grafana
-    image: "grafana/grafana"
-    ports:
-      - "3000:3000"
-    volumes:
-      - ./docker/grafana/datasources/:/etc/grafana/provisioning/datasources/
-      - ./docker/grafana/dashboard.yaml:/etc/grafana/provisioning/dashboards/main.yaml
-      - ./docker/grafana/dashboards:/var/lib/grafana/dashboards
-
-
 
   mariadb:
     image: 'mariadb:11.3.2'
@@ -53,5 +30,30 @@ services:
       - "--mysqld.address=host.docker.internal:3306"
     ports:
       - "9104:9104"
+
+  prometheus:
+    container_name: prometheus
+    image: "prom/prometheus"
+    extra_hosts:
+      - host.docker.internal:host-gateway
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml
+    volumes:
+      - ./docker/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - "9090:9090"
+
+  grafana:
+    container_name: grafana
+    image: "grafana/grafana"
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./docker/grafana/datasources/:/etc/grafana/provisioning/datasources/
+      - ./docker/grafana/dashboard.yaml:/etc/grafana/provisioning/dashboards/main.yaml
+      - ./docker/grafana/dashboards:/var/lib/grafana/dashboards
+
+
+
 
 

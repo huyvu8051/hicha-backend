@@ -1,4 +1,4 @@
-package io.huyvu.hicha.repository.impl.repo;
+package io.huyvu.hicha.repository;
 
 import com.github.javafaker.Faker;
 import io.huyvu.hicha.repository.model.Message;
@@ -9,7 +9,6 @@ import org.junit.jupiter.api.Test;
 import org.mybatis.spring.boot.test.autoconfigure.MybatisTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.testcontainers.containers.MariaDBContainer;
 import org.testcontainers.junit.jupiter.Container;
@@ -47,7 +46,6 @@ class MessageRepositoryImplTest {
 
     @BeforeEach
     void setup() {
-
         for (var i : IntStream.range(0, 10).toArray()) {
             messageRepository.save(new Message(null, 1L, 1L, i + " " + faker.lorem().paragraph(faker.number().numberBetween(1, 10)), Instant.now()));
         }
@@ -64,5 +62,6 @@ class MessageRepositoryImplTest {
         List<Message> all = messageRepository.findByConversationId(2);
         assertThat(all).isEmpty();
     }
+
 
 }
