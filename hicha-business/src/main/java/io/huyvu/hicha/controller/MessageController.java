@@ -22,14 +22,13 @@ public class MessageController {
     void sendMessage(@RequestBody MessageDTO dto) {
         Message entity = MessageMapper.INSTANCE.map(dto);
         entity.setSentAt(Instant.now());
-//        messageRepository.save(entity);
+        messageRepository.save(entity);
     }
 
 
     @GetMapping("{id}")
     ConversationDetails getConversationDetails(@PathVariable Long id) {
- //       var messages = messageRepository.findByConversationId(id);
-        var messages = new ArrayList<Message>();
+        var messages = messageRepository.findByConversationId(id);
         return ConversationDetails.builder()
                 .conversationId(id)
                 .conversationName("Conversation " + id)

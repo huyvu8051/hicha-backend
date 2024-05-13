@@ -19,15 +19,15 @@ create table if not exists user_conversations
     foreign key (conversation_id) references conversations (conversation_id)
 );
 
-create table if not exists messages
+CREATE TABLE IF NOT EXISTS messages
 (
-    message_id      bigint auto_increment primary key,
-    conversation_id bigint,
-    sender_id       bigint,
-    message_text    text,
-    sent_at         timestamp default current_timestamp,
-    foreign key (conversation_id) references conversations (conversation_id),
-    foreign key (sender_id) references users (user_id)
+    message_id      BIGINT AUTO_INCREMENT PRIMARY KEY,
+    conversation_id BIGINT,
+    sender_id       BIGINT,
+    message_text    TEXT,
+    sent_at         TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (conversation_id) REFERENCES conversations (conversation_id),
+    FOREIGN KEY (sender_id) REFERENCES users (user_id),
+    INDEX idx_message_id (message_id DESC)
 );
-
 
