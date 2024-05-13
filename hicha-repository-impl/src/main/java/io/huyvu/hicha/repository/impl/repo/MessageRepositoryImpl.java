@@ -25,7 +25,6 @@ public interface MessageRepositoryImpl extends MessageRepository {
             set conversation_id = #{conversationId},
                 sender_id = #{senderId},
                 message_text = #{messageText},
-                sent_at = #{sentAt}
-            """)
+                sent_at = #{sentAt}""")
     void save(Message message);
 }

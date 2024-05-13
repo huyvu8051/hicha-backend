@@ -12,8 +12,8 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 import java.util.Locale;
 
 @Slf4j
-@Testcontainers
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@Testcontainers
 public class IntegrationTest {
 
     @Container
@@ -21,7 +21,7 @@ public class IntegrationTest {
     static MariaDBContainer<?> mariaDBContainer =  new MariaDBContainer<>("mariadb:latest")
             .withDatabaseName("hicha");
 
-    static Faker faker = new Faker(Locale.of("vi"));
+    protected static Faker faker = new Faker(Locale.of("vi"));
 
     @BeforeEach
     public void setup() {

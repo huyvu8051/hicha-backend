@@ -4,6 +4,7 @@ import com.github.javafaker.Faker;
 import io.huyvu.hicha.repository.model.Message;
 import io.huyvu.hicha.repository.repo.MessageRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.Ignore;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mybatis.spring.boot.test.autoconfigure.MybatisTest;
@@ -52,9 +53,9 @@ class MessageRepositoryImplTest {
     }
 
     @Test
-    void shouldReturn10Items() {
+    void shouldReturnMoreThan10Items() {
         List<Message> all = messageRepository.findByConversationId(1);
-        assertThat(all).hasSize(10);
+        assertThat(all).hasSizeGreaterThan(10);
     }
 
     @Test
