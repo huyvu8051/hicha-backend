@@ -163,7 +163,9 @@
                             </goals>
                         </execution>
                     </executions>
-                    <configuration></configuration>
+                    <configuration>
+                       <guiTestFile>jmeter/Test Plan.jmx</guiTestFile>
+                    </configuration>
                 </plugin>
             </plugins>
         </pluginManagement>
