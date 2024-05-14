@@ -11,12 +11,12 @@
     </TestPlan>
     <hashTree>
       <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Thread Group" enabled="true">
-        <stringProp name="ThreadGroup.num_threads">2</stringProp>
+        <stringProp name="ThreadGroup.num_threads">100</stringProp>
         <stringProp name="ThreadGroup.ramp_time">3</stringProp>
         <boolProp name="ThreadGroup.same_user_on_next_iteration">true</boolProp>
         <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
         <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
-          <stringProp name="LoopController.loops">2</stringProp>
+          <stringProp name="LoopController.loops">50</stringProp>
           <boolProp name="LoopController.continue_forever">false</boolProp>
         </elementProp>
         <boolProp name="ThreadGroup.delayedStart">false</boolProp>
@@ -25,17 +25,6 @@
         <stringProp name="ThreadGroup.delay"></stringProp>
       </ThreadGroup>
       <hashTree>
-        <BeanShellSampler guiclass="BeanShellSamplerGui" testclass="BeanShellSampler" testname="BeanShell Sampler Faker" enabled="true">
-          <stringProp name="BeanShellSampler.query">import com.github.javafaker.Faker;
-import java.util.Locale;
-
-Faker faker = new Faker(Locale.of(&quot;vi&quot;));
-var msgTxt = faker.lorem().paragraph(faker.number().numberBetween(1, 10));
-vars.put(&quot;msgTxt&quot;, msgTxt);
-return msgTxt;</stringProp>
-          <boolProp name="BeanShellSampler.resetInterpreter">false</boolProp>
-        </BeanShellSampler>
-        <hashTree/>
         <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
           <stringProp name="ConstantTimer.delay">300</stringProp>
         </ConstantTimer>
@@ -121,6 +110,20 @@ return msgTxt;</stringProp>
           <hashTree/>
         </hashTree>
       </hashTree>
+      <BeanShellPreProcessor guiclass="TestBeanGUI" testclass="BeanShellPreProcessor" testname="BeanShell PreProcessor" enabled="true">
+        <boolProp name="resetInterpreter">false</boolProp>
+        <stringProp name="parameters"></stringProp>
+        <stringProp name="filename"></stringProp>
+        <stringProp name="script">import com.github.javafaker.Faker;
+import java.util.Locale;
+
+Faker faker = new Faker(Locale.of(&quot;vi&quot;));
+var msgTxt = faker.lorem().paragraph(faker.number().numberBetween(1, 10));
+vars.put(&quot;msgTxt&quot;, msgTxt);
+print(msgTxt);
+return msgTxt;</stringProp>
+      </BeanShellPreProcessor>
+      <hashTree/>
     </hashTree>
   </hashTree>
 </jmeterTestPlan>
