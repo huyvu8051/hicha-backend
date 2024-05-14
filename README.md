@@ -20,3 +20,8 @@ mvn clean verify
 ```shell
 mvn clean verify -pl hicha-repository-impl
 ```
+
+### Open Jmeter GUI
+```shell
+mvn jmeter:configure jmeter:gui
+```
