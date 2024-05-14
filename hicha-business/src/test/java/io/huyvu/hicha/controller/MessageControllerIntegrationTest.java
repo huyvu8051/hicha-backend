@@ -4,11 +4,11 @@ import io.huyvu.hicha.IntegrationTest;
 import io.huyvu.hicha.model.ConversationDetails;
 import io.huyvu.hicha.model.MessageDTO;
 import org.junit.jupiter.api.Test;
+import org.mybatis.spring.boot.test.autoconfigure.MybatisTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 
 import static org.assertj.core.api.Assertions.assertThat;
-
 
 class MessageControllerIntegrationTest extends IntegrationTest {
     @Autowired

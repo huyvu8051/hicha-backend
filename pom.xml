@@ -128,7 +128,8 @@
                 <configuration>
                     <excludes>
                         <exclude>io/huyvu/hicha/HichaBusinessApplication.class</exclude>
-                        <exclude>io/huyvu/hicha/config/nativebuild/*</exclude>
+                        <exclude>**/config/nativebuild/*</exclude>
+                        <exclude>io/huyvu/hicha/repository/impl/HichaRepositoryImplApplication.class</exclude>
                     </excludes>
                 </configuration>
             </plugin>

@@ -1,4 +1,4 @@
-package io.huyvu.hicha.repository.impl.config;
+package io.huyvu.hicha.repository.impl.config.nativebuild;
 
 import org.apache.commons.logging.LogFactory;
 import org.apache.ibatis.annotations.DeleteProvider;
