@@ -1,3 +1,6 @@
+# Hicha - High performance Chat Application
+## Some useful command 
+
 ### Package build
 ```shell
 mvn clean package
