@@ -165,6 +165,10 @@
                     </executions>
                     <configuration>
                        <guiTestFile>jmeter/Test Plan.jmx</guiTestFile>
+                        <generateReports>true</generateReports>
+                        <testPlanLibraries>
+                            <artifact>com.github.javafaker:javafaker:1.0.2</artifact>
+                        </testPlanLibraries>
                     </configuration>
                 </plugin>
             </plugins>
