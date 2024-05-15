@@ -25,3 +25,8 @@ mvn clean verify -pl hicha-repository-impl
 ```shell
 mvn jmeter:configure jmeter:gui
 ```
+
+### JMeter stress test
+```shell
+mvn jmeter:jmeter
+```

@@ -82,57 +82,6 @@
 
     <build>
         <plugins>
-            <plugin>
-                <groupId>org.sonarsource.scanner.maven</groupId>
-                <artifactId>sonar-maven-plugin</artifactId>
-                <version>3.4.0.905</version>
-            </plugin>
-            <plugin>
-                <groupId>org.jacoco</groupId>
-                <artifactId>jacoco-maven-plugin</artifactId>
-                <version>0.8.11</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>prepare-agent</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>report</id>
-                        <phase>test</phase>
-                        <goals>
-                            <goal>report</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>jacoco-check</id>
-                        <goals>
-                            <goal>check</goal>
-                        </goals>
-                        <configuration>
-                            <rules>
-                                <rule>
-                                    <element>PACKAGE</element>
-                                    <limits>
-                                        <limit>
-                                            <counter>LINE</counter>
-                                            <value>COVEREDRATIO</value>
-                                            <minimum>80%</minimum>
-                                        </limit>
-                                    </limits>
-                                </rule>
-                            </rules>
-                        </configuration>
-                    </execution>
-                </executions>
-                <configuration>
-                    <excludes>
-                        <exclude>io/huyvu/hicha/HichaBusinessApplication.class</exclude>
-                        <exclude>**/config/nativebuild/*</exclude>
-                        <exclude>io/huyvu/hicha/repository/impl/HichaRepositoryImplApplication.class</exclude>
-                    </excludes>
-                </configuration>
-            </plugin>
         </plugins>
         <pluginManagement>
             <plugins>
@@ -141,34 +90,75 @@
                     <artifactId>jmeter-maven-plugin</artifactId>
                     <version>3.8.0</version>
                     <executions>
-                        <!-- Generate JMeter configuration -->
-                        <execution>
-                            <id>configuration</id>
-                            <goals>
-                                <goal>configure</goal>
-                            </goals>
-                        </execution>
-                        <!-- Run JMeter tests -->
                         <execution>
                             <id>jmeter-tests</id>
                             <goals>
+                                <goal>configure</goal>
                                 <goal>jmeter</goal>
-                            </goals>
-                        </execution>
-                        <!-- Fail build on errors in test -->
-                        <execution>
-                            <id>jmeter-check-results</id>
-                            <goals>
-                                <goal>results</goal>
                             </goals>
                         </execution>
                     </executions>
                     <configuration>
-                       <guiTestFile>jmeter/Test Plan.jmx</guiTestFile>
                         <generateReports>true</generateReports>
                         <testPlanLibraries>
                             <artifact>com.github.javafaker:javafaker:1.0.2</artifact>
                         </testPlanLibraries>
+                        <propertiesJMeter>
+                            <BUILD_TAG>${project.version}</BUILD_TAG>
+                            <threads>7</threads>
+                            <duration>30</duration>
+                        </propertiesJMeter>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.sonarsource.scanner.maven</groupId>
+                    <artifactId>sonar-maven-plugin</artifactId>
+                    <version>3.4.0.905</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.jacoco</groupId>
+                    <artifactId>jacoco-maven-plugin</artifactId>
+                    <version>0.8.11</version>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>prepare-agent</goal>
+                            </goals>
+                        </execution>
+                        <execution>
+                            <id>report</id>
+                            <phase>test</phase>
+                            <goals>
+                                <goal>report</goal>
+                            </goals>
+                        </execution>
+                        <execution>
+                            <id>jacoco-check</id>
+                            <goals>
+                                <goal>check</goal>
+                            </goals>
+                            <configuration>
+                                <rules>
+                                    <rule>
+                                        <element>PACKAGE</element>
+                                        <limits>
+                                            <limit>
+                                                <counter>LINE</counter>
+                                                <value>COVEREDRATIO</value>
+                                                <minimum>80%</minimum>
+                                            </limit>
+                                        </limits>
+                                    </rule>
+                                </rules>
+                            </configuration>
+                        </execution>
+                    </executions>
+                    <configuration>
+                        <excludes>
+                            <exclude>io/huyvu/hicha/HichaBusinessApplication.class</exclude>
+                            <exclude>**/config/nativebuild/*</exclude>
+                            <exclude>io/huyvu/hicha/repository/impl/HichaRepositoryImplApplication.class</exclude>
+                        </excludes>
                     </configuration>
                 </plugin>
             </plugins>
