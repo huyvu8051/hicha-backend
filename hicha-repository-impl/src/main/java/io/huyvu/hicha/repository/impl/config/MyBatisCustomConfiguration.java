@@ -1,4 +1,4 @@
-package io.huyvu.hicha.repository.impl.config.nativebuild;
+package io.huyvu.hicha.repository.impl.config;
 
 import org.mybatis.spring.boot.autoconfigure.ConfigurationCustomizer;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -10,8 +10,6 @@ public class MyBatisCustomConfiguration {
     @Bean
     @ConditionalOnProperty(name = "mybatis.configuration.map-underscore-to-camel-case", matchIfMissing = true)
     ConfigurationCustomizer mybatisConfigurationCustomizer() {
-        return configuration -> {
-            configuration.setMapUnderscoreToCamelCase(true);
-        };
+        return configuration -> configuration.setMapUnderscoreToCamelCase(true);
     }
 }
