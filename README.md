@@ -28,5 +28,5 @@ mvn jmeter:configure jmeter:gui
 
 ### JMeter stress test
 ```shell
-mvn jmeter:jmeter
+mvn clean compile  jmeter:configure jmeter:jmeter
 ```
