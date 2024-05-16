@@ -51,6 +51,7 @@
         <module>hicha-business</module>
         <module>hicha-repository</module>
         <module>hicha-repository-impl</module>
+        <module>smart-mapstruct</module>
     </modules>
 
     <dependencies>
