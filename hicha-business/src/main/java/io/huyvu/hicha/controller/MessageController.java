@@ -1,6 +1,9 @@
 package io.huyvu.hicha.controller;
 
-import io.huyvu.hicha.MapperUtils;
+import io.huyvu.hicha.UnknownSourceTargetType;
+import io.huyvu.hicha.UnknownSourceTargetType.KnownSourceTargetType;
+import io.huyvu.hicha.UnknownSourceTargetType.KnownTargetType;
+import io.huyvu.hicha.UnknownSourceTargetType.KnownSourceType;
 import io.huyvu.hicha.mapper.MessageMapper;
 import io.huyvu.hicha.model.ConversationDetails;
 import io.huyvu.hicha.model.MessageDTO;
@@ -23,7 +26,17 @@ public class MessageController {
     String sendMessage(@RequestBody MessageDTO dto) {
         Message entity = MessageMapper.INSTANCE.map(dto);
 
-        Message o = MapperUtils.mapTo(dto);
+        MessageRepository msg = new UnknownSourceTargetType().from(dto);
+        Message msg1 = new UnknownSourceTargetType().from(dto);
+
+        Message msg2 = new KnownTargetType<>(Message.class).from(dto);
+
+        Message from = new KnownSourceType<>(MessageDTO.class).from(dto);
+        MessageRepository from3 = new KnownSourceType<>(MessageDTO.class).from(dto);
+
+        Message from2 = new KnownSourceTargetType<>(MessageDTO.class, Message.class).from(dto);
+
+
 
         entity.setSentAt(Instant.now());
         messageRepository.save(entity);
