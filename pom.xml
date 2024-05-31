@@ -92,22 +92,25 @@
                     <executions>
                         <execution>
                             <id>configuration</id>
+                            <phase>compile</phase>
                             <goals>
                                 <goal>configure</goal>
                             </goals>
                         </execution>
+                        <execution>
+                            <id>stresstest</id>
+                            <phase>verify</phase>
+                            <goals>
+                                <goal>jmeter</goal>
+                            </goals>
+                        </execution>
                     </executions>
                     <configuration>
-                        <generateReports>true</generateReports>
+
                         <testPlanLibraries>
                             <artifact>com.github.javafaker:javafaker:1.0.2</artifact>
                             <artifact>org.mariadb.jdbc:mariadb-java-client:3.3.3</artifact>
                         </testPlanLibraries>
-                        <propertiesJMeter>
-                            <BUILD_TAG>${project.version}</BUILD_TAG>
-                            <threads>7</threads>
-                            <duration>30</duration>
-                        </propertiesJMeter>
                     </configuration>
                 </plugin>
                 <plugin>
