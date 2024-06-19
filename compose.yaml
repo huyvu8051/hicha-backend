@@ -37,11 +37,14 @@ services:
     ports:
       - '3306:3306'
 
-    #    deploy:
-    #      resources:
-    #        limits:
-    #          cpus: '1'  # Minimum CPU requirement for MariaDB (10% of one core)
-    #          memory: 256M  # Minimum memory requirement for MariaDB (256MB)
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: '256M'
+        reservations:
+          cpus: '0.1'
+          memory: '128M'
 
 
   mariadb-exporter:

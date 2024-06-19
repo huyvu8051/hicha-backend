@@ -106,11 +106,16 @@
                         </execution>
                     </executions>
                     <configuration>
-
+                        <generateReports>true</generateReports>
                         <testPlanLibraries>
                             <artifact>com.github.javafaker:javafaker:1.0.2</artifact>
                             <artifact>org.mariadb.jdbc:mariadb-java-client:3.3.3</artifact>
                         </testPlanLibraries>
+                        <overrideRootLogLevel>INFO</overrideRootLogLevel>
+                        <propertiesJMeter>
+                            <log_level.jmeter>INFO</log_level.jmeter>
+
+                        </propertiesJMeter>
                     </configuration>
                 </plugin>
                 <plugin>
