@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.*;
 import java.time.Instant;
 import java.util.List;
 
+import static io.huyvu.hicha.mapper.MapperUtils.map;
+
 @RestController
 @RequestMapping("api/v1/message")
 @RequiredArgsConstructor
@@ -29,9 +31,7 @@ public class MessageController {
 
     @PostMapping
     String sendMessage(@RequestBody MessageDTO dto) {
-        Message entity = MessageMapper.INSTANCE.map(dto);
-
-        Message s = MapperUtils.map(dto, Message.class);
+        var entity = map(dto, Message.class);
         entity.setSentAt(Instant.now());
         messageRepository.save(entity);
         return "Success";

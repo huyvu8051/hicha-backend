@@ -12,6 +12,8 @@ import org.objectweb.asm.*;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 @Mojo(name = "generate", defaultPhase = LifecyclePhase.COMPILE)
@@ -50,6 +52,21 @@ public class EasyMapstructMojo extends AbstractMojo {
                 @Override
                 public MethodVisitor visitMethod(int access, String name, String descriptor, String signature, String[] exceptions) {
                     return new MethodVisitor(Opcodes.ASM9) {
+                        private final Map<Integer, String> localVariables = new HashMap<>();
+                        private Type[] argumentTypes;
+
+                        @Override
+                        public void visitCode() {
+                            argumentTypes = Type.getArgumentTypes(descriptor);
+                            super.visitCode();
+                        }
+
+                        @Override
+                        public void visitLocalVariable(String name, String descriptor, String signature, Label start, Label end, int index) {
+                            localVariables.put(index, descriptor);
+                            super.visitLocalVariable(name, descriptor, signature, start, end, index);
+                        }
+
                         @Override
                         public void visitMethodInsn(int opcode, String owner, String name, String descriptor, boolean isInterface) {
                             if (opcode == Opcodes.INVOKESTATIC &&
@@ -57,6 +74,11 @@ public class EasyMapstructMojo extends AbstractMojo {
                                     name.equals("map") &&
                                     descriptor.equals("(Ljava/lang/Object;Ljava/lang/Class;)Ljava/lang/Object;")) {
                                 getLog().info("Found MapperUtils#map usage in: " + classFile.getPath());
+
+                                if (argumentTypes != null && argumentTypes.length > 0) {
+                                    String dtoType = argumentTypes[0].getClassName();
+                                    getLog().info("Type of dto: " + dtoType);
+                                }
                             }
                             super.visitMethodInsn(opcode, owner, name, descriptor, isInterface);
                         }
@@ -66,4 +88,7 @@ public class EasyMapstructMojo extends AbstractMojo {
             classReader.accept(classVisitor, 0);
         }
     }
+
+
+
 }
