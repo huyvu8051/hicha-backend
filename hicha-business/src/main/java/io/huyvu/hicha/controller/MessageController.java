@@ -18,6 +18,17 @@ import static io.huyvu.hicha.mapper.MapperUtils.map;
 @RequiredArgsConstructor
 public class MessageController {
     private final MessageRepository messageRepository;
+    String name = "global";
+    @PostMapping
+    String sendMessage(String test,int abc, @RequestBody MessageDTO dto) {
+        var name = "chungta";
+        int asd = 1;
+        System.out.println(name);
+        var entity = map(dto, Message.class);
+        entity.setSentAt(Instant.now());
+        messageRepository.save(entity);
+        return "Success";
+    }
 
     @Data
     @FieldDefaults(level = AccessLevel.PRIVATE)
@@ -29,13 +40,7 @@ public class MessageController {
         String messageText;
     }
 
-    @PostMapping
-    String sendMessage(@RequestBody MessageDTO dto) {
-        var entity = map(dto, Message.class);
-        entity.setSentAt(Instant.now());
-        messageRepository.save(entity);
-        return "Success";
-    }
+
 
 
     @Data

@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Stack;
 
 @Mojo(name = "generate", defaultPhase = LifecyclePhase.COMPILE)
 public class EasyMapstructMojo extends AbstractMojo {
@@ -48,43 +49,7 @@ public class EasyMapstructMojo extends AbstractMojo {
     private void analyzeClass(File classFile) throws IOException {
         try (FileInputStream fis = new FileInputStream(classFile)) {
             ClassReader classReader = new ClassReader(fis);
-            ClassVisitor classVisitor = new ClassVisitor(Opcodes.ASM9) {
-                @Override
-                public MethodVisitor visitMethod(int access, String name, String descriptor, String signature, String[] exceptions) {
-                    return new MethodVisitor(Opcodes.ASM9) {
-                        private final Map<Integer, String> localVariables = new HashMap<>();
-                        private Type[] argumentTypes;
-
-                        @Override
-                        public void visitCode() {
-                            argumentTypes = Type.getArgumentTypes(descriptor);
-                            super.visitCode();
-                        }
-
-                        @Override
-                        public void visitLocalVariable(String name, String descriptor, String signature, Label start, Label end, int index) {
-                            localVariables.put(index, descriptor);
-                            super.visitLocalVariable(name, descriptor, signature, start, end, index);
-                        }
-
-                        @Override
-                        public void visitMethodInsn(int opcode, String owner, String name, String descriptor, boolean isInterface) {
-                            if (opcode == Opcodes.INVOKESTATIC &&
-                                    owner.equals("io/huyvu/hicha/mapper/MapperUtils") &&
-                                    name.equals("map") &&
-                                    descriptor.equals("(Ljava/lang/Object;Ljava/lang/Class;)Ljava/lang/Object;")) {
-                                getLog().info("Found MapperUtils#map usage in: " + classFile.getPath());
-
-                                if (argumentTypes != null && argumentTypes.length > 0) {
-                                    String dtoType = argumentTypes[0].getClassName();
-                                    getLog().info("Type of dto: " + dtoType);
-                                }
-                            }
-                            super.visitMethodInsn(opcode, owner, name, descriptor, isInterface);
-                        }
-                    };
-                }
-            };
+            ClassVisitor classVisitor = new CustomClassVisitor(Opcodes.ASM9, classFile, getLog());
             classReader.accept(classVisitor, 0);
         }
     }
