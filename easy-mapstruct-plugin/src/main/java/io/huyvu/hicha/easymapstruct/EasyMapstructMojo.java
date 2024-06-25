@@ -7,41 +7,63 @@ import org.apache.maven.plugins.annotations.Component;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.project.MavenProject;
+import org.objectweb.asm.*;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.Objects;
 
 @Mojo(name = "generate", defaultPhase = LifecyclePhase.COMPILE)
 public class EasyMapstructMojo extends AbstractMojo {
     @Component
     private MavenProject project;
+
+    @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
-        getLog().info("Hello, this is my custom Mojo!");
+        getLog().info("Starting bytecode analysis...");
+        File classesDir = new File(project.getBuild().getOutputDirectory());
 
-        // Get the compiled classes directory
-        File compiledClassesDir = new File(project.getBuild().getOutputDirectory());
-
-        // Verify the directory exists
-        if (compiledClassesDir.exists() && compiledClassesDir.isDirectory()) {
-            getLog().info("Compiled classes directory: " + compiledClassesDir.getAbsolutePath());
-
-            // Perform actions on the compiled classes
-            processCompiledClasses(compiledClassesDir);
-        } else {
-            getLog().warn("Compiled classes directory does not exist or is not a directory.");
+        try {
+            analyzeClasses(classesDir);
+        } catch (IOException e) {
+            throw new MojoExecutionException("Error analyzing classes", e);
         }
     }
 
-    private void processCompiledClasses(File compiledClassesDir) {
-        // Custom logic to process compiled classes
-        // For example, you could iterate through the classes and perform actions on them
-        File[] files = compiledClassesDir.listFiles();
-        if (files != null) {
-            for (File file : files) {
-                if (file.isFile() && file.getName().endsWith(".class")) {
-                    getLog().info("Processing compiled class: " + file.getName());
-                    // Add your custom processing logic here
+    private void analyzeClasses(File dir) throws IOException {
+        if (dir.isDirectory()) {
+            for (File file : Objects.requireNonNull(dir.listFiles())) {
+                if (file.isDirectory()) {
+                    analyzeClasses(file);
+                } else if (file.getName().endsWith(".class")) {
+                    analyzeClass(file);
                 }
             }
+        }
+    }
+
+    private void analyzeClass(File classFile) throws IOException {
+        try (FileInputStream fis = new FileInputStream(classFile)) {
+            ClassReader classReader = new ClassReader(fis);
+            ClassVisitor classVisitor = new ClassVisitor(Opcodes.ASM9) {
+                @Override
+                public MethodVisitor visitMethod(int access, String name, String descriptor, String signature, String[] exceptions) {
+                    return new MethodVisitor(Opcodes.ASM9) {
+                        @Override
+                        public void visitMethodInsn(int opcode, String owner, String name, String descriptor, boolean isInterface) {
+                            if (opcode == Opcodes.INVOKESTATIC &&
+                                    owner.equals("io/huyvu/hicha/mapper/MapperUtils") &&
+                                    name.equals("map") &&
+                                    descriptor.equals("(Ljava/lang/Object;Ljava/lang/Class;)Ljava/lang/Object;")) {
+                                getLog().info("Found MapperUtils#map usage in: " + classFile.getPath());
+                            }
+                            super.visitMethodInsn(opcode, owner, name, descriptor, isInterface);
+                        }
+                    };
+                }
+            };
+            classReader.accept(classVisitor, 0);
         }
     }
 }
