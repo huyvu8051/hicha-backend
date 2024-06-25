@@ -6,6 +6,7 @@ import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.Component;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
+import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 import org.objectweb.asm.*;
 
@@ -19,7 +20,7 @@ import java.util.Stack;
 
 @Mojo(name = "generate", defaultPhase = LifecyclePhase.COMPILE)
 public class EasyMapstructMojo extends AbstractMojo {
-    @Component
+    @Parameter( defaultValue = "${project}", readonly = true )
     private MavenProject project;
 
     @Override
