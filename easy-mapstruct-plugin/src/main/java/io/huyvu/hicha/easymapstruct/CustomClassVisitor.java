@@ -4,10 +4,7 @@ import org.apache.maven.plugin.AbstractMojo;
 import org.objectweb.asm.*;
 
 import java.io.File;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 public class CustomClassVisitor extends ClassVisitor {
     private final AbstractMojo mojo;
@@ -108,6 +105,20 @@ public class CustomClassVisitor extends ClassVisitor {
             }
             //Everytime push variable onto stack
 
+            @Override
+            public void visitTypeInsn(int opcode, String type) {
+                if (opcode == Opcodes.CHECKCAST) {
+                    LocalVar localVar = stack.get(stack.size() - 1);
+                    if(localVar.varName.startsWith("mbi_")) {
+                        Optional<MapBuilder> first = mapBuilders.stream().filter(e -> e.instanceId.equals(localVar.varName)).findFirst();
+                        if (first.isPresent()) {
+                            mojo.getLog().info(" -> cast: " + stack);
+                            first.get().targetType = type;
+                        }
+                    }
+                }
+                super.visitTypeInsn(opcode, type);
+            }
 
             @Override
             public void visitMethodInsn(int opcode, String owner, String name, String descriptor, boolean isInterface) {
@@ -118,35 +129,49 @@ public class CustomClassVisitor extends ClassVisitor {
                         name.equals(METHOD_FROM) &&
                         descriptor.equals(FROM_ARGUMENT_DESCRIPTION)) {
 
+                    String instanceId = "mbi_" + UUID.randomUUID();
 
                     LocalVar localVar = stack.getLast();
                     MapBuilder mapBuilder = new MapBuilder();
                     mapBuilder.sourceIndex = localVar.index;
+                    mapBuilder.instanceId = instanceId;
                     mapBuilders.push(mapBuilder);
                     mojo.getLog().info(" -> from(" + localVar.index + "): " + stack);
 
                     /*      mojo.getLog().info(classFile.getPath() + ": static from(" + stack.pollLast() + ")");*/
-                    stack.addLast(new LocalVar(-2, "MapperBuilderInstance", "mbi_" + UUID.randomUUID().toString().substring(0,5)));
+                    stack.addLast(new LocalVar(-2, "MapperBuilderInstance", instanceId));
 
                 } else if (opcode == Opcodes.INVOKEVIRTUAL &&
                         owner.equals(BUILDER_GROUP_ID) &&
                         name.equals(METHOD_MAP) &&
                         descriptor.equals(MAP_ARGUMENT_DESCRIPTION)) {
                     LocalVar localVar = stack.get(stack.size() - 3);
-                    if(localVar.varName.startsWith("mbi_")){
-                        mojo.getLog().info(localVar.varName + ".map("+ stack.get(stack.size() - 2) +  ","+ stack.get(stack.size() - 1) +"): " + stack);
-                        stack.addLast(new LocalVar(-2, "MapperBuilderInstance", localVar.varName));
+                    if(localVar.varName.startsWith("mbi_")) {
+                        Optional<MapBuilder> first = mapBuilders.stream().filter(e -> e.instanceId.equals(localVar.varName)).findFirst();
+                        if (first.isPresent()) {
+                            LocalVar target = stack.get(stack.size() - 1);
+                            LocalVar source = stack.get(stack.size() - 2);
+                            mojo.getLog().info(localVar + ".map(" + source + "," + target + "): " + stack);
+                            first.get().keyMapList.add(new KeyMap(source.varName, target.varName));
+                            stack.addLast(new LocalVar(-1, "MapperBuilderInstance", localVar.varName));
+                        }
                     }
+
 
                 } else if (opcode == Opcodes.INVOKEVIRTUAL &&
                         owner.equals(BUILDER_GROUP_ID) &&
                         name.equals(METHOD_BUILD) &&
                         descriptor.equals(BUILD_ARGUMENT_DESCRIPTION)) {
 
-                    mojo.getLog().info(" -> build(): " + stack);
-                    /*Object instance = stack.pollLast();
-                    mojo.getLog().info(classFile.getPath() + ": virtual " + instance + ".build()");*/
-                    stack.addLast(new LocalVar(-2, "target_type", "currStack"));
+                    LocalVar localVar = stack.get(stack.size() - 1);
+                    if(localVar.varName.startsWith("mbi_")) {
+                        Optional<MapBuilder> first = mapBuilders.stream().filter(e -> e.instanceId.equals(localVar.varName)).findFirst();
+                        if (first.isPresent()) {
+                            mojo.getLog().info(" -> build(): " + stack);
+                            stack.addLast(new LocalVar(-1, "unknown", localVar.varName));
+                        }
+                    }
+
 
                 }
                 super.visitMethodInsn(opcode, owner, name, descriptor, isInterface);
