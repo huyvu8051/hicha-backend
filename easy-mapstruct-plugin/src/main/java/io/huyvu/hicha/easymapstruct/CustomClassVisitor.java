@@ -8,18 +8,14 @@ import java.util.*;
 
 public class CustomClassVisitor extends ClassVisitor {
     private final AbstractMojo mojo;
-    private final ClassWriter classWriter;
     protected CustomClassVisitor(AbstractMojo mojo, ClassWriter classWriter) {
         super(Opcodes.ASM9, classWriter);
         this.mojo = mojo;
-        this.classWriter = classWriter;
     }
 
     @Override
     public MethodVisitor visitMethod(int access, String name, String descriptor, String signature, String[] exceptions) {
         MethodVisitor mv = super.visitMethod(access, name, descriptor, signature, exceptions);
-
-
         return new MethodVisitor(api, mv) {
             private static final String METHOD_MAP = "map";
             private static final String GROUP_ID = "io/huyvu/hicha/mapper/MapperUtils";
@@ -123,7 +119,7 @@ public class CustomClassVisitor extends ClassVisitor {
                             super.visitFieldInsn(Opcodes.GETSTATIC, "io/huyvu/hicha/mapper/MessageMapper", "INSTANCE", "Lio/huyvu/hicha/mapper/MessageMapper;");
 
                             // Inject ALOAD 3
-                            super.visitVarInsn(Opcodes.ALOAD, 3);
+                            super.visitVarInsn(Opcodes.ALOAD, first.get().sourceIndex);
 
                             // Inject INVOKEINTERFACE io/huyvu/hicha/mapper/MessageMapper.map (Lio/huyvu/hicha/controller/MessageController$MessageDTO;)Lio/huyvu/hicha/repository/model/Message; (itf)
                             super.visitMethodInsn(Opcodes.INVOKEINTERFACE, "io/huyvu/hicha/mapper/MessageMapper", "map", "(Lio/huyvu/hicha/controller/MessageController$MessageDTO;)Lio/huyvu/hicha/repository/model/Message;", true);
