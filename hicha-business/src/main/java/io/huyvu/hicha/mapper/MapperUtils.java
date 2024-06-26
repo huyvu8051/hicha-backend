@@ -5,7 +5,7 @@ import lombok.SneakyThrows;
 public class MapperUtils {
 
     @SneakyThrows
-    public static MapperBuilder from(Object... sources) {
+    public static MapperBuilder from(Object source, Object... sources) {
         return new MapperBuilder();
     }
 

@@ -28,7 +28,7 @@ class MessageControllerIntegrationTest extends IntegrationTest {
     @Test
     void sendMessage() {
         String messageText = faker.lorem().paragraph(faker.number().numberBetween(1, 10));
-        restTemplate.postForObject("/api/v1/message", new MessageDTO(1, 1, messageText), String.class);
+        restTemplate.postForObject("/api/v1/message", new MessageDTO(1L, 1L, messageText), String.class);
         var response = restTemplate.getForObject("/api/v1/message/1", ConversationDetails.class);
         assertThat(response.getMessages().getFirst().getMessageText()).isEqualTo(messageText);
     }

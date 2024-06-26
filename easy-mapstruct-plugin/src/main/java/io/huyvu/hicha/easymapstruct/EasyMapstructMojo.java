@@ -50,7 +50,7 @@ public class EasyMapstructMojo extends AbstractMojo {
     private void analyzeClass(File classFile) throws IOException {
         try (FileInputStream fis = new FileInputStream(classFile)) {
             ClassReader classReader = new ClassReader(fis);
-            ClassVisitor classVisitor = new CustomClassVisitor(Opcodes.ASM9, classFile, getLog());
+            ClassVisitor classVisitor = new CustomClassVisitor(this, classFile);
             classReader.accept(classVisitor, 0);
         }
     }

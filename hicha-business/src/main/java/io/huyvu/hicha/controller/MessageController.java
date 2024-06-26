@@ -24,6 +24,7 @@ public class MessageController {
     String sendMessage(String test, int abc, @RequestBody MessageDTO dto) {
         String bienchuoi = "gia tri cua bien chuoi";
         int bienso = 35;
+        bienchuoi.equals("test");
 
         Message entity = from(dto)
                 .map("nm", "name")
@@ -31,11 +32,11 @@ public class MessageController {
                 .map("dateOfBirth", "dob")
                 .build();
 
-        MapperUtils.MapperBuilder map = from(dto)
+        /*MapperUtils.MapperBuilder map = from(dto)
                 .map("1", "1");
 
         MapperUtils.MapperBuilder map1 = from(dto)
-                .map("2", "2");
+                .map("2", "2");*/
 
 
         entity.setSentAt(Instant.now());
