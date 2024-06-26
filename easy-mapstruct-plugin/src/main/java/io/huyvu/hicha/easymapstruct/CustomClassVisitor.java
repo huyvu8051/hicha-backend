@@ -112,7 +112,7 @@ public class CustomClassVisitor extends ClassVisitor {
                     if(localVar.varName.startsWith("mbi_")) {
                         Optional<MapBuilder> first = mapBuilders.stream().filter(e -> e.instanceId.equals(localVar.varName)).findFirst();
                         if (first.isPresent()) {
-                            mojo.getLog().info(" -> cast: " + stack);
+                            mojo.getLog().info(" -> cast: " + localVar + " to " + type);
                             first.get().targetType = type;
                         }
                     }
@@ -180,6 +180,10 @@ public class CustomClassVisitor extends ClassVisitor {
             @Override
             public void visitEnd() {
                 super.visitEnd();
+                for (MapBuilder mapBuilder : mapBuilders) {
+                    LocalVar localVar = localVariables.get(mapBuilder.sourceIndex);
+                    mapBuilder.sourceType = localVar.type;
+                }
             }
         };
     }

@@ -9,6 +9,7 @@ public class MapBuilder {
 
     public final List<KeyMap> keyMapList;
     public String instanceId;
+    public String sourceType;
 
     public MapBuilder() {
         this.keyMapList = new ArrayList<>();
