@@ -22,7 +22,7 @@ public class MessageController {
 
     @PostMapping
     String sendMessage(String test, int abc, @RequestBody MessageDTO dto) {
-        String bienchuoi = "gia tri cua bien chuoi";
+        String bienchuoi = "bien_chuoi";
         int bienso = 35;
         bienchuoi.equals("test");
 
