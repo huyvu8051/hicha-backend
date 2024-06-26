@@ -8,19 +8,19 @@ import java.util.*;
 
 public class CustomClassVisitor extends ClassVisitor {
     private final AbstractMojo mojo;
-    private final File classFile;
-
-    protected CustomClassVisitor(AbstractMojo mojo, File file) {
-        super(Opcodes.ASM9);
+    private final ClassWriter classWriter;
+    protected CustomClassVisitor(AbstractMojo mojo, ClassWriter classWriter) {
+        super(Opcodes.ASM9, classWriter);
         this.mojo = mojo;
-        this.classFile = file;
+        this.classWriter = classWriter;
     }
 
     @Override
     public MethodVisitor visitMethod(int access, String name, String descriptor, String signature, String[] exceptions) {
+        MethodVisitor mv = super.visitMethod(access, name, descriptor, signature, exceptions);
 
 
-        return new MethodVisitor(api) {
+        return new MethodVisitor(api, mv) {
             private static final String METHOD_MAP = "map";
             private static final String GROUP_ID = "io/huyvu/hicha/mapper/MapperUtils";
             private static final String BUILDER_GROUP_ID = "io/huyvu/hicha/mapper/MapperUtils$MapperBuilder";
@@ -114,6 +114,19 @@ public class CustomClassVisitor extends ClassVisitor {
                         if (first.isPresent()) {
                             mojo.getLog().info(" -> cast: " + localVar + " to " + type);
                             first.get().targetType = type;
+
+
+                            // Inject custom instructions after CHECKCAST
+                            super.visitInsn(Opcodes.POP); // Pop the result of the invokevirtual
+
+                            // Inject GETSTATIC io/huyvu/hicha/mapper/MessageMapper.INSTANCE : Lio/huyvu/hicha/mapper/MessageMapper;
+                            super.visitFieldInsn(Opcodes.GETSTATIC, "io/huyvu/hicha/mapper/MessageMapper", "INSTANCE", "Lio/huyvu/hicha/mapper/MessageMapper;");
+
+                            // Inject ALOAD 3
+                            super.visitVarInsn(Opcodes.ALOAD, 3);
+
+                            // Inject INVOKEINTERFACE io/huyvu/hicha/mapper/MessageMapper.map (Lio/huyvu/hicha/controller/MessageController$MessageDTO;)Lio/huyvu/hicha/repository/model/Message; (itf)
+                            super.visitMethodInsn(Opcodes.INVOKEINTERFACE, "io/huyvu/hicha/mapper/MessageMapper", "map", "(Lio/huyvu/hicha/controller/MessageController$MessageDTO;)Lio/huyvu/hicha/repository/model/Message;", true);
                         }
                     }
                 }

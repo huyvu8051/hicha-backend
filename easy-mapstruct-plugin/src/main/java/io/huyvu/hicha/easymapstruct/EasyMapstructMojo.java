@@ -12,6 +12,7 @@ import org.objectweb.asm.*;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -47,11 +48,17 @@ public class EasyMapstructMojo extends AbstractMojo {
         }
     }
 
-    private void analyzeClass(File classFile) throws IOException {
+    public void analyzeClass(File classFile) throws IOException {
         try (FileInputStream fis = new FileInputStream(classFile)) {
             ClassReader classReader = new ClassReader(fis);
-            ClassVisitor classVisitor = new CustomClassVisitor(this, classFile);
+            ClassWriter classWriter = new ClassWriter(ClassWriter.COMPUTE_FRAMES | ClassWriter.COMPUTE_MAXS);
+            CustomClassVisitor classVisitor = new CustomClassVisitor(this, classWriter);
             classReader.accept(classVisitor, 0);
+
+            // Write the modified class file
+            try (FileOutputStream fos = new FileOutputStream(classFile)) {
+                fos.write(classWriter.toByteArray());
+            }
         }
     }
 
