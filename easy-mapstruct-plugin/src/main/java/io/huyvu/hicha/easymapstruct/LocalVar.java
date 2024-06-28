@@ -5,7 +5,7 @@ class LocalVar {
     final String type;
     final String varName;
 
-    LocalVar(int index, String type, String varName) {
+    LocalVar(int index, String type, String varName, int lineNumber) {
         this.index = index;
         this.type = type;
         this.varName = varName;
