@@ -6,7 +6,7 @@ Content-Type: application/json
 {
   "conversationId": 1,
   "senderId": 1,
-  "messageText": "{{$random.alphanumeric(300)}}"
+  "messageText": "Dung lam trai tim anh dau{{$random.alphanumeric(300)}}"
 }
 
 

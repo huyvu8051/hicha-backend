@@ -138,17 +138,14 @@ public class CustomClassVisitor extends ClassVisitor {
                         name.equals(METHOD_FROM) &&
                         descriptor.equals(FROM_ARGUMENT_DESCRIPTION)) {
 
-                    String instanceId = "mbi_" + UUID.randomUUID();
+
 
                     LocalVar localVar = stack.getLast();
                     MapBuilder mapBuilder = new MapBuilder();
                     mapBuilder.sourceIndex = localVar.index;
-                    mapBuilder.instanceId = instanceId;
                     mapBuilders.push(mapBuilder);
                     mojo.getLog().info(" -> from(" + localVar.index + "): " + stack);
-
-                    /*      mojo.getLog().info(classFile.getPath() + ": static from(" + stack.pollLast() + ")");*/
-                    stack.addLast(new LocalVar(-2, "MapperBuilderInstance", instanceId));
+                    stack.addLast(new LocalVar(-1, "MapperBuilderInstance", mapBuilder.instanceId));
 
                 } else if (opcode == Opcodes.INVOKEVIRTUAL &&
                         owner.equals(BUILDER_GROUP_ID) &&
