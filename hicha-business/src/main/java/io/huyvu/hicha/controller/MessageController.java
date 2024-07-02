@@ -18,26 +18,15 @@ import static io.huyvu.hicha.mapper.MapperUtils.from;
 @RequiredArgsConstructor
 public class MessageController {
     private final MessageRepository messageRepository;
-    String name = "global";
 
     @PostMapping
-    String sendMessage(String test, int abc, @RequestBody MessageDTO dto) {
-        String bienchuoi = "bien_chuoi";
-        int bienso = 35;
-        bienchuoi.equals("test");
+    String sendMessage(@RequestBody MessageDTO dto) {
 
         Message entity = from(dto)
                 .map("nm", "name")
                 .map("gender", "sex")
                 .map("dateOfBirth", "dob")
                 .build();
-
-        /*MapperUtils.MapperBuilder map = from(dto)
-                .map("1", "1");
-
-        MapperUtils.MapperBuilder map1 = from(dto)
-                .map("2", "2");*/
-
 
         entity.setSentAt(Instant.now());
         messageRepository.save(entity);
