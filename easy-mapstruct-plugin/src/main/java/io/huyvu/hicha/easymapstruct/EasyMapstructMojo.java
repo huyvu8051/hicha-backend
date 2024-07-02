@@ -52,7 +52,7 @@ public class EasyMapstructMojo extends AbstractMojo {
         try (FileInputStream fis = new FileInputStream(classFile)) {
             ClassReader classReader = new ClassReader(fis);
             ClassWriter classWriter = new ClassWriter(ClassWriter.COMPUTE_FRAMES | ClassWriter.COMPUTE_MAXS);
-            CustomClassVisitor classVisitor = new CustomClassVisitor(this, classWriter);
+            CustomClassVisitor classVisitor = new CustomClassVisitor(this, classWriter, project);
             classReader.accept(classVisitor, 0);
 
             // Write the modified class file

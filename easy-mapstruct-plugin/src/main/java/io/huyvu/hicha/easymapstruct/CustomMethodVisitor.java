@@ -1,6 +1,7 @@
 package io.huyvu.hicha.easymapstruct;
 
 import org.apache.maven.plugin.Mojo;
+import org.apache.maven.project.MavenProject;
 import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
@@ -9,6 +10,7 @@ import org.objectweb.asm.Type;
 import java.util.*;
 
 public class CustomMethodVisitor extends MethodVisitor {
+    MavenProject project;
     private final Mojo mojo;
     private final String CLASS_NAME;
     private static final String METHOD_MAP = "map";
@@ -25,12 +27,14 @@ public class CustomMethodVisitor extends MethodVisitor {
     private final LinkedList<MapBuilder> mapBuilders = new LinkedList<>();
     private final String methodName;
     private int lineNumber = 0;
-
-    protected CustomMethodVisitor(int api, MethodVisitor methodVisitor, Mojo mojo, String className,String methodName) {
+    private final JavaFileGenerator javaFileGenerator;
+    protected CustomMethodVisitor(int api, MethodVisitor methodVisitor, Mojo mojo, String className, String methodName, MavenProject project) {
         super(api, methodVisitor);
         this.CLASS_NAME = className;
         this.mojo = mojo;
         this.methodName = methodName;
+        this.project = project;
+        this.javaFileGenerator = new JavaFileGenerator(project, mojo);
     }
 
 
@@ -198,6 +202,9 @@ public class CustomMethodVisitor extends MethodVisitor {
         for (MapBuilder mapBuilder : mapBuilders) {
             LocalVar localVar = localVariables.get(mapBuilder.sourceIndex);
             mapBuilder.sourceType = localVar.type;
+
+            javaFileGenerator.generate(mapBuilder);
+
         }
     }
 
